@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>健康チェックアップ</h1>
+    <h1>食事アンケート</h1>
     <form @submit.prevent="submitAnswers">
       <div v-for="(question, index) in questions" :key="index">
         <label :class="getClass(question.category)">{{ question.text }}</label>
