@@ -1,9 +1,6 @@
 <template>
-  <Tutorial/>
+  <div>
+    <NuxtLink to="/questionnaire">アンケートに答える</NuxtLink>
+  </div>
 </template>
 
-<script>
-export default {
-  name: 'IndexPage'
-}
-</script>
