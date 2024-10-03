@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas ref="radarCanvas"></canvas>
+    <canvas ref="radarCanvas" class="radar-chart"></canvas>
   </div>
 </template>
 
@@ -46,19 +46,22 @@ export default {
       this.chart = new ChartJS(ctx, {
         type: 'radar',
         data: {
-          labels: ['循環器', '副腎疲労', '甲状腺機能低下', '甲状腺亢進', '肝機能負荷', '低血糖'],
+          labels: ['循環器系傾向', '副腎疲労傾向', '甲状腺機能低下傾向', '甲状腺亢進傾向', '肝機能負荷傾向', '低血糖傾向'],
           datasets: [
             {
-              label: 'スコア',
-              data: scoreArray,
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1,
+                label: 'スコア',
+                data: scoreArray,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,  // ラインを太くする
+                pointBorderWidth: 2, // ポイントの境界線を太くする
+                pointRadius: 2,  // ポイント自体を大きくする
             },
           ],
         },
-        options: {
-          scales: {
+          options: {
+            responsive: false,
+            scales: {
             r: {
               beginAtZero: true,
               min: 0, // 最小値を0に固定
@@ -67,7 +70,8 @@ export default {
                 stepSize: 1, // 1単位ずつ刻む
                 display: false, // 軸上の数値を非表示
               },
-              grid: {
+                grid: {
+                //display: false,  // グリッド線全体を非表示
                 color: 'rgba(0, 0, 0, 0.2)', // 基本の図形（グリッド）を表示
               },
             },
@@ -76,10 +80,18 @@ export default {
             legend: {
               display: false, // ラベルを非表示
             },
-          },
+              },
         },
       });
     },
   },
 };
 </script>
+
+<style scoped>
+.radar-chart {
+    width: 400px;
+    height: 400px;;
+}
+
+</style>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <NuxtLink to="/questionnaire">アンケートに答える</NuxtLink>
+    <TopPage></TopPage>
   </div>
 </template>
-
