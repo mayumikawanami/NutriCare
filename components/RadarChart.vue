@@ -10,77 +10,103 @@ import { Chart as ChartJS, Title, Tooltip, Legend, RadialLinearScale, PointEleme
 ChartJS.register(Title, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, RadarController);
 
 export default {
-  props: ['scores', 'questions'],
+  props: {
+    scores: {
+      type: Object,
+      required: true,
+      default: () => ({
+        carb_intake: 0,
+        fat_intake: 0,
+        digestive_health: 0,
+        dietary_bias: 0,
+        mental_health: 0,
+        mineral_balance: 0,
+      }),
+    },
+  },
   mounted() {
     this.renderChart();
   },
   watch: {
     scores: {
-          handler() {
-        //console.log('Received scores:', this.scores); // Add this line for debugging
-        this.renderChart();
+      handler() {
+        this.renderChart(); // データ変更時にチャートを再描画
       },
-      deep: true,
+      deep: true, // オブジェクト内の変更を監視
     },
   },
   methods: {
     renderChart() {
       const ctx = this.$refs.radarCanvas.getContext('2d');
 
-      // 古いチャートがある場合は破棄
-      if (this.chart) {
+      // 既存のチャートがあれば破棄
+      if (this.chart instanceof ChartJS) {
         this.chart.destroy();
       }
 
-      // オブジェクト形式のスコアを配列に変換
+      // スコアの値を配列に変換
       const scoreArray = [
-        this.scores.circulatory,
-        this.scores.adrenal_fatigue,
-        this.scores.hypothyroidism,
-        this.scores.hyperthyroidism,
-        this.scores.liver_function,
-        this.scores.hypoglycemia,
+        this.scores.carb_intake || 0,
+        this.scores.fat_intake || 0,
+        this.scores.digestive_health || 0,
+        this.scores.dietary_bias || 0,
+        this.scores.mental_health || 0,
+        this.scores.mineral_balance || 0,
       ];
 
       // 新しいチャートを作成
       this.chart = new ChartJS(ctx, {
         type: 'radar',
         data: {
-          labels: ['循環器系傾向', '副腎疲労傾向', '甲状腺機能低下傾向', '甲状腺亢進傾向', '肝機能負荷傾向', '低血糖傾向'],
+          labels: ['糖質', '脂質', '消化吸収', '偏食', 'マインド', ['ミネラル', 'バランス']],
           datasets: [
             {
-                label: 'スコア',
-                data: scoreArray,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1,  // ラインを太くする
-                pointBorderWidth: 2, // ポイントの境界線を太くする
-                pointRadius: 2,  // ポイント自体を大きくする
+              label: 'スコア',
+              data: scoreArray,
+              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 3,
+              pointBorderWidth: 2,
+              pointRadius: 2,
             },
           ],
         },
-          options: {
-            responsive: false,
-            scales: {
+        options: {
+          responsive: true,
+          scales: {
             r: {
               beginAtZero: true,
-              min: 0, // 最小値を0に固定
-              max: 5, // 最大値を5に固定 (これを適宜調整)
+              min: 0,
+              max: 5,
               ticks: {
-                stepSize: 1, // 1単位ずつ刻む
-                display: false, // 軸上の数値を非表示
+                stepSize: 1,
+                callback: function (value) {
+                  if (value === 0){
+                    return '0'; // 0も表示する
+                  }
+                  return value; // スコアをそのまま表示
+                },
+                font: {
+                  size: 18, // スコアの文字サイズを調整
+                },
+                  color: 'rgba(0, 0, 0, 0.7)', // スコアの文字色
               },
-                grid: {
-                //display: false,  // グリッド線全体を非表示
-                color: 'rgba(0, 0, 0, 0.2)', // 基本の図形（グリッド）を表示
+              grid: {
+                color: 'rgba(0, 0, 0, 0.2)',
+              },
+              pointLabels: {
+          font: {
+            size: 18, // ラベルの文字サイズを指定
+          },
+          color: 'rgba(0, 0, 0, 0.7)', // ラベルの文字色
               },
             },
           },
           plugins: {
             legend: {
-              display: false, // ラベルを非表示
+              display: false,
             },
-              },
+          },
         },
       });
     },
@@ -90,8 +116,7 @@ export default {
 
 <style scoped>
 .radar-chart {
-    width: 400px;
-    height: 400px;;
+  /* width: 500px;
+  height: 100%; */
 }
-
 </style>

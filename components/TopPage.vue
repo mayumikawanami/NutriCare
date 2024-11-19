@@ -1,6 +1,6 @@
 <template>
   <div class="top-page">
-    <NuxtLink to="/questionnaire">アンケートに答える</NuxtLink>
+    <NuxtLink to="/questionnaire" class="link-button">アンケートに答える</NuxtLink>
   </div>
 </template>
 
@@ -11,14 +11,14 @@
   margin-top: 50px;
 
 }
-a {
+.link-button {
+  display: inline-block; /* Ensure it's a block-level element for padding */
   color: antiquewhite;
   text-decoration: none;
-  padding: 40px;
+  padding: 20px 40px; /* Adjust padding */
   font-size: 30px;
   background-color: blue;
   cursor: pointer;
-  text-align: center;
   border-radius: 10px;
 }
 </style>
