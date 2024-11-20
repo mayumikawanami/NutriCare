@@ -87,7 +87,7 @@ export default {
                   return value; // スコアをそのまま表示
                 },
                 font: {
-                  size: 18, // スコアの文字サイズを調整
+                  size: 15, // スコアの文字サイズを調整
                 },
                   color: 'rgba(0, 0, 0, 0.7)', // スコアの文字色
               },

@@ -252,7 +252,16 @@ export default {
 }
 
 /* 質問ラベル */
-label { font-size: 1.1em; display: block; }
+label {
+  font-size: 1.1em; display: block;
+    @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
+
+    @media (max-width: 480px) {
+    font-size: 0.7rem;
+  }
+}
 
 /* フォーム全体 */
 .questionnaire-label {
@@ -286,6 +295,14 @@ button:hover { background-color: #45a049; }
   font-size: 0.9em;
   border-radius: 5px;
   padding:0 20px ;
+
+    @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+  }
 }
 
 /* ラジオボタンとエラーメッセージを横並びにする */
@@ -294,4 +311,5 @@ button:hover { background-color: #45a049; }
   align-items: center;
   gap: 10px; /* ラジオボタン間の余白 */
 }
+
 </style>
