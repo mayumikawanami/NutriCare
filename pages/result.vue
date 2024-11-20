@@ -1,7 +1,7 @@
 <template>
   <div class="result">
     <div class="result-top">
-      <h2>結果</h2>
+      <h2 class="result-top_title">結果</h2>
       <NuxtLink to="/">トップページに戻る</NuxtLink>
     </div>
     <div class="scores">
@@ -44,7 +44,7 @@ export default {
 
 <style>
 /* 結果セクション */
-h2 {
+.result-top_title {
   text-align: center;
   margin-top: 20px;
 }
@@ -54,7 +54,8 @@ h1 {
 
 .scores {
   margin: 30px auto 50px;
-  width: 70%;
+  max-width: 500px;
+  /* width: 70%; */
 }
 
 .result {
@@ -65,6 +66,14 @@ h1 {
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 軽い影を付けて浮き上がらせる */
+    @media (max-width: 768px) {
+      padding: 20px;
+  }
+
+    @media (max-width: 480px) {
+      padding: 10px;
+  }
+
 }
 
 .result-top a {

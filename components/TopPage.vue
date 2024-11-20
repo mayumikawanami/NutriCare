@@ -15,8 +15,8 @@
   display: inline-block; /* Ensure it's a block-level element for padding */
   color: antiquewhite;
   text-decoration: none;
-  padding: 20px 40px; /* Adjust padding */
-  font-size: 30px;
+  padding: 10px 40px; /* Adjust padding */
+  font-size: 20px;
   background-color: blue;
   cursor: pointer;
   border-radius: 10px;
