@@ -52,5 +52,10 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: ['vue-chartjs', 'chart.js'],
+  },
+
+  server: {
+    port: 3001, // 使用したいポート番号
+    // host: 'localhost' // 必要に応じてホストも変更可能
   }
 }
