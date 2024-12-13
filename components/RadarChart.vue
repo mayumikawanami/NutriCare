@@ -19,7 +19,7 @@ export default {
         fat_intake: 0,
         digestive_health: 0,
         dietary_bias: 0,
-        mental_health: 0,
+        protein: 0,
         mineral_balance: 0,
       }),
     },
@@ -50,7 +50,7 @@ export default {
         this.scores.fat_intake || 0,
         this.scores.digestive_health || 0,
         this.scores.dietary_bias || 0,
-        this.scores.mental_health || 0,
+        this.scores.protein || 0,
         this.scores.mineral_balance || 0,
       ];
 
@@ -58,7 +58,7 @@ export default {
       this.chart = new ChartJS(ctx, {
         type: 'radar',
         data: {
-          labels: ['糖質', '脂質', '消化吸収', '偏食', 'マインド', ['ミネラル', 'バランス']],
+          labels: ['糖質', '脂質', '消化吸収', '偏食', 'たんぱく質', ['ミネラル', 'バランス']],
           datasets: [
             {
               label: 'スコア',

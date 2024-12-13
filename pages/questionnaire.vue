@@ -111,26 +111,26 @@ export default {
           category: "dietary_bias",
         },
 
-        // マインド
+        // タンパク質
         {
           text: "納豆、お味噌、醤油などの伝統的な和食を食べない",
-          category: "mental_health"
+          category: "protein"
         },
         {
           text: "落ち着かない等の症状があると、ついつい甘いものなどを食べさせてしまう"
-          , category: "mental_health"
+          , category: "protein"
         },
         {
           text: "お湯で注ぐだけの即席スープを飲むのが大好きだ",
-          category: "mental_health",
+          category: "protein",
         },
         {
           text: "ほぼ毎日グルテンフリーの食事をしている",
-          category: "mental_health"
+          category: "protein"
         },
         {
-          text: "サプリを何種類か飲んでいる（飲んでいる場合、その他⇩欄に記入をお願いします）",
-          category: "mental_health",
+          text: "サプリメントを何種類か飲んでいる",
+          category: "protein",
         },
 
         // ミネラルバランス
@@ -162,7 +162,7 @@ export default {
         fat_intake: 0,
         digestive_health: 0,
         dietary_bias: 0,
-        mental_health: 0,
+        protein: 0,
         mineral_balance: 0,
       },
     };
@@ -178,7 +178,7 @@ export default {
         fat_intake: "text-blue",
         digestive_health: "text-yellow",
         dietary_bias: "text-green",
-        mental_health: "text-purple",
+        protein: "text-purple",
         mineral_balance: "text-orange",
       };
       return classes[category] || "text-black";
@@ -203,7 +203,7 @@ export default {
         fat_intake: this.getCategoryScore("fat_intake"),
         digestive_health: this.getCategoryScore("digestive_health"),
         dietary_bias: this.getCategoryScore("dietary_bias"),
-        mental_health: this.getCategoryScore("mental_health"),
+        protein: this.getCategoryScore("protein"),
         mineral_balance: this.getCategoryScore("mineral_balance"),
       };
       this.$router.push({ name: "result", query: { scores: JSON.stringify(this.scores) } });
