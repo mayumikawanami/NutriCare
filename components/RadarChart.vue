@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import { Chart as ChartJS, Title, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, RadarController } from 'chart.js';
+import { Chart as ChartJS, Title, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, RadarController,Filler } from 'chart.js';
 
-ChartJS.register(Title, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, RadarController);
+ChartJS.register(Title, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, RadarController,Filler);
 
 export default {
   props: {
@@ -58,16 +58,17 @@ export default {
       this.chart = new ChartJS(ctx, {
         type: 'radar',
         data: {
-          labels: ['糖質', '脂質', '消化吸収', '偏食', 'たんぱく質', ['ミネラル', 'バランス']],
+          labels: ['糖質', '脂質', '消化吸収', '偏食', 'タンパク質', ['ミネラル', 'バランス']],
           datasets: [
             {
               label: 'スコア',
               data: scoreArray,
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
               borderColor: 'rgba(54, 162, 235, 1)',
               borderWidth: 3,
               pointBorderWidth: 2,
               pointRadius: 2,
+              fill: true,
             },
           ],
         },

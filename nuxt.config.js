@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'frontend',
+    title: '食事診断',
     htmlAttrs: {
       lang: 'en'
     },

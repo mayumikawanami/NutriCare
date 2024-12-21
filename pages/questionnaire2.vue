@@ -411,14 +411,12 @@ export default {
   font-size: 1.1em;
   display: block;
   line-height: 4;
-  
   @media (max-width: 768px) {
     font-size: 0.8rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 0.6rem;
-    width: 97%;
+    font-size: 0.7rem;
   }
 }
 
@@ -456,8 +454,7 @@ button:hover {
   }
 
   @media (max-width: 480px) {
-    font-size: 0.5rem;
-    line-height: normal;
+    font-size: 0.7rem;
   }
 }
 

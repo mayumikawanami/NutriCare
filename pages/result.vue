@@ -1,14 +1,34 @@
 <template>
   <div class="result">
     <div class="result-top">
-      <h2 class="result-top_title">結　果</h2>
-      <p class="advice" v-for="(message,index) in adviceMessages" :key="index">{{ message }}</p>
+      <h2 class="result-top_title">結果はこちら</h2>
     </div>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th>評価</th>
+          <th>コメント</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in resultTable" :key="index" :class="'grade-' + item.grade">
+          <td>{{ item.name }}</td>
+          <td>{{ item.grade }}</td>
+          <td class="justify-text">{{ item.comment }}</td>
+        </tr>
+      </tbody>
+    </table>
+
     <div class="scores">
       <RadarChart :scores="parsedScores" />
     </div>
     <div class="result-bottom">
-      <NuxtLink to="/">トップページに戻る</NuxtLink>
+      <NuxtLink to="/" >トップページに戻る</NuxtLink>
+      <a href="https://docs.google.com/forms/d/15FGl9uAeuHaquDOLfRS9f8CU9SG4N-swgoVbrtlCqfA/viewform?edit_requested=true" 
+     class="more-info-btn" target="_blank" rel="noopener">
+    さらに詳しく知りたい方はこちらへ
+  </a>
     </div>
   </div>
 </template>
@@ -28,7 +48,7 @@ export default {
         protein: 0,
         mineral_balance: 0,
       },
-      adviceMessages:[],
+      resultTable: [],
     };
   },
   created() {
@@ -38,38 +58,109 @@ export default {
       try {
         this.parsedScores = JSON.parse(scores);
         console.log('Received scores:', this.parsedScores); // デバッグ用
-        this.generateAdvice();
+        this.generateResultTable();
       } catch (error) {
         console.error('Failed to parse scores:', error);
       }
     }
   },
-  methods: {
-    generateAdvice() {
-      const messages = [];
-      const { carb_intake, fat_intake, digestive_health, dietary_bias, protein, mineral_balance } = this.parsedScores;
-
-      if (carb_intake < 3) {
-        messages.push("・糖質の摂取量が多いかもしれません")
-      }
-      if (fat_intake < 3) {
-        messages.push("・脂質の摂取量が多いかもしれません")
-      }
-      if (digestive_health < 3) {
-        messages.push("・消化吸収に心配があります")
-      }
-      if (dietary_bias < 3) {
-        messages.push("・偏食に心配があります")
-      }
-      if (protein < 3) {
-        messages.push("・たんぱく質の摂取量が不足しているかもしれません")
-      }
-      if (mineral_balance < 3) {
-        messages.push("・ミネラルが不足しているかもしれません")
-      }
-      this.adviceMessages = messages.length > 0 ? messages : ["全体的に良好です！"];
-      console.log(messages);
+watch: {
+    parsedScores: {
+      handler() {
+        this.generateResultTable();  // スコア変更時にコメントを再生成
+      },
+      deep: true,  // ネストされたオブジェクトも監視
     },
+  },
+
+  methods: {
+    generateResultTable() {
+  // 評価ロジック（スコアに応じて異なるコメントを返す）
+  const gradeComment = (score, name) => {
+    let grade, comment;
+
+
+    // スコアに応じたコメントの処理
+    switch (score) {
+      case 5:
+        grade = 'A';
+        comment = (name === '糖質') ? '糖質コントロールもできていて、素晴らしいですね！現状の食生活を続けていきましょう。' :
+                  (name === '脂質') ? 'お見事です！今後もオメガ３など良質な油を摂取し、加工食品の油の過剰には注意してください。' :
+                  (name === '消化吸収') ? '消化吸収もバッチリできているようですね！食べすぎなどには注意してくださいね。' :
+                  (name === '偏食') ? '偏食の心配もないようですね！バランスのよい食事を継続していきましょう！' :
+                  (name === 'タンパク質') ? 'タンパク質も十分補えていそうですね！魚やお肉などバランスよく今後も食べていきましょう。' :
+                  (name === 'ミネラルバランス') ? 'ミネラルもかなり意識されて、大変すばらしいです。このまま継続していきましょう。' :
+                  '';
+        break;
+      case 4:
+        grade = 'B';
+        comment = (name === '糖質') ? '糖質コントロールをさらに改善できそうです。タンパク質、脂質もバランスよく摂っていきましょう。' :
+                  (name === '脂質') ? '加工食品の油が少し多いかもしれません。オメガ3とオメガ6のバランスも意識してきましょう' :
+                  (name === '消化吸収') ? '消化吸収には大きな問題はなさそうです。消化力を上げる食材等も取り入れていきましょう。' :
+                  (name === '偏食') ? '偏食の心配が少しあるようですね。食べられるものと組み合わせて、バリエーション増やしていきましょう！' :
+                  (name === 'タンパク質') ? 'タンパク質の意識ができていそうです。お肉や魚等からバランスよく食べていきましょう！' :
+                  (name === 'ミネラルバランス') ? 'ミネラルも意識されて、すばらしいです！外食時等も、より意識していきましょう' :
+                  '';
+        break;
+      case 3:
+        grade = 'C';
+        comment = (name === '糖質') ? '少し糖質過多になっていないか？見直してみましょう。白米、白砂糖など白を減らしましょう。' :
+                  (name === '脂質') ? '加工食品での油を減らし、オメガ３など良質な油を増やすよう心掛けましょう。' :
+                  (name === '消化吸収') ? '消化吸収にやや問題がある可能性があります。消化力をあげる食材を取り入れていきましょう。' :
+                  (name === '偏食') ? '偏食の心配があるようです。食べられるものと組み合わせて、バリエーション増やしましょう。' :
+                  (name === 'タンパク質') ? 'タンパク質の不足が推測されます。1日に必要なたんぱく質を再度確認しましょう。' :
+                  (name === 'ミネラルバランス') ? 'ミネラル不足の可能性があるかもしれません。ATM（亜鉛、鉄、マグネシウム）を意識して摂っていきましょう。' :
+                  '';
+        break;
+      case 2:
+        grade = 'D';
+        comment = (name === '糖質') ? '糖質過多になっている可能性が高いです。おやつから見直して見ると良いかもしれません。' :
+                  (name === '脂質') ? '脂質コントロールができていない可能性が高いです。特に加工食品の油の摂り過ぎに注意してください。' :
+                  (name === '消化吸収') ? '消化吸収に問題がある可能性があります。まずは、よく噛んで消化力をあげていきましょう。' :
+                  (name === '偏食') ? '偏食が心配ですね。偏食改善のポイントは、少しづつバリエーションを増やすことです。' :
+                  (name === 'タンパク質') ? 'タンパク質の不足が考えられます。偏食がある場合は、食べられる食材からタンパク質の摂取を増やしていきましょう。' :
+                  (name === 'ミネラルバランス') ? 'ミネラル不足の可能性があるかもしれません。ATM（亜鉛、鉄、マグネシウム）を意識して摂っていきましょう。' :
+                  '';
+        break;
+      case 1:
+        grade = 'E';
+        comment = (name === '糖質') ? '今後追加。' :
+                  (name === '脂質') ? '今後追加。' :
+                  (name === '消化吸収') ? '今後追加。' :
+                  (name === '偏食') ? '今後追加。' :
+                  (name === 'タンパク質') ? '今後追加。' :
+                  (name === 'ミネラルバランス') ? '今後追加。' :
+                  '';
+        break;
+      case 0:
+        grade = 'F';
+        comment = (name === '糖質') ? '今後追加。' :
+                  (name === '脂質') ? '今後追加。' :
+                  (name === '消化吸収') ? '今後追加。' :
+                  (name === '偏食') ? '今後追加。' :
+                  (name === 'タンパク質') ? '今後追加。' :
+                  (name === 'ミネラルバランス') ? '今後追加。' :
+                  '';
+        break;
+      default:
+        grade = '不明';
+        comment = '評価できませんでした';
+    }
+
+    return { grade, comment };
+  };
+
+  // 項目ごとの結果を生成
+  const scores = this.parsedScores;
+  this.resultTable = [
+    { name: '糖質', ...gradeComment(scores.carb_intake, '糖質') },
+    { name: '脂質', ...gradeComment(scores.fat_intake, '脂質') },
+    { name: '消化吸収', ...gradeComment(scores.digestive_health, '消化吸収') },
+    { name: '偏食', ...gradeComment(scores.dietary_bias, '偏食') },
+    { name: 'タンパク質', ...gradeComment(scores.protein, 'タンパク質') },
+    { name: 'ミネラルバランス', ...gradeComment(scores.mineral_balance, 'ミネラルバランス') },
+  ];
+  }
   },
 };
 </script>
@@ -79,10 +170,7 @@ export default {
 .result-top {
   text-align: left;
   margin-top: 10px;
-  background-color: rgb(246, 175, 239);
   width: 50%;
-  padding: 10px;
-  border-radius: 20px;
 }
 .advice{
   margin: 0;
@@ -96,7 +184,10 @@ export default {
 .scores {
   margin: 30px auto 50px;
   max-width: 500px;
-  /* width: 70%; */
+
+    @media (max-width: 480px) {
+      margin: 0;
+  }
 }
 
 .result {
@@ -113,15 +204,85 @@ export default {
 
     @media (max-width: 480px) {
       padding: 10px;
+      margin: 0;
   }
 
 }
 
-.result-bottom a {
+/* .result-bottom a {
   text-decoration: none;
   background-color: blue;
   color: white;
   padding: 5px;
   border-radius: 10px;
+} */
+
+.more-info-btn {
+  background-color: #4CAF50; /* ボタンの色 */
+  padding: 8px 20px;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none; /* 下線を削除 */
+  transition: background-color 0.3s ease;
+  margin-left: 10px; /* トップページリンクとの間隔 */
 }
+
+.more-info-btn:hover {
+  background-color: #45a049; /* ホバー時の色 */
+}
+
+.result-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 10px;
+
+  @media (max-width: 480px) {
+    font-size: 0.5rem;
+    margin-top: 0;
+  }
+}
+
+.result-table th,
+.result-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.result-table th {
+  background-color: #ddd;
+}
+
+.result-table td.justify-text {
+  text-align: justify;
+}
+
+.result-table tr:nth-child(even) {
+  background-color: #e8f8e1;
+}
+
+/* .grade-A {
+  background-color: #cbf9c5;
+}
+
+.grade-B {
+  background-color: #cbf9c5;
+}
+
+.grade-C {
+  background-color: #e1f7aa;
+}
+
+.grade-D {
+  background-color: #f5c6cb;
+}
+
+.grade-E {
+  background-color: #f5c6cb;
+} */
 </style>
