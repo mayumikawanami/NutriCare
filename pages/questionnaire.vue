@@ -348,13 +348,13 @@ export default {
 
         const isValid = this.validateCurrentPage(); // 最終ページでもバリデーションをチェック
         if (!isValid) {
-    // バリデーションエラーがあればエラーを表示
-        this.$nextTick(() => {
-        console.log("バリデーションエラーが表示されました");
-        });
-        return;
+          // バリデーションエラーがあればエラーを表示
+          this.$nextTick(() => {
+            console.log("バリデーションエラーが表示されました");
+          });
+          return;
         }
-          this.validationError = false;
+        this.validationError = false;
         // スコアの計算
         this.scores = {
           carb_intake: this.getCategoryScore("carb_intake"),
@@ -411,7 +411,7 @@ export default {
   font-size: 1.1em;
   display: block;
   line-height: 4;
-  
+
   @media (max-width: 768px) {
     font-size: 0.8rem;
   }

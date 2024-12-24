@@ -9,7 +9,7 @@ export default {
   head: {
     title: '食事診断',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ja'
     },
     meta: [
       { charset: 'utf-8' },
