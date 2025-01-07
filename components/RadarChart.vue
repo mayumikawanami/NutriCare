@@ -88,7 +88,7 @@ export default {
                   return value; // スコアをそのまま表示
                 },
                 font: {
-                  size: 15, // スコアの文字サイズを調整
+                  size: 12, // スコアの文字サイズを調整
                 },
                   color: 'rgba(0, 0, 0, 0.7)', // スコアの文字色
               },
@@ -97,7 +97,7 @@ export default {
               },
               pointLabels: {
           font: {
-            size: 18, // ラベルの文字サイズを指定
+            size: 12, // ラベルの文字サイズを指定
           },
           color: 'rgba(0, 0, 0, 0.7)', // ラベルの文字色
               },
@@ -116,8 +116,5 @@ export default {
 </script>
 
 <style scoped>
-.radar-chart {
-  /* width: 500px;
-  height: 100%; */
-}
+
 </style>

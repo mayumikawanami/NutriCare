@@ -18,7 +18,7 @@
             :id="'yes-' + (questionIndex + index)"
             @change="clearError(questionIndex + index)"
           />
-          <label :for="'yes-' + (questionIndex + index)">はい</label>
+          <label :for="'yes-' + (questionIndex + index)" class="radio-label">はい</label>
 
           <input
             type="radio"
@@ -27,7 +27,7 @@
             :id="'no-' + (questionIndex + index)"
             @change="clearError(questionIndex + index)"
           />
-          <label :for="'no-' + (questionIndex + index)">いいえ</label>
+          <label :for="'no-' + (questionIndex + index)" class="radio-label">いいえ</label>
 
           <p
             v-if="validationErrors[questionIndex + index]"
@@ -37,17 +37,27 @@
           </p>
         </div>
       </div>
-
+      <!-- <div class="error-message_container">
+        <p v-if="validationErrors[questionIndex + index]"
+            class="error-message"
+        >
+            選択していない質問があります
+          </p>
+      </div> -->
       <div class="button-container">
-        <button type="button" @click="prevPage" v-if="currentPage > 1">
+        <div class="page-button_container">
+          <button type="button" @click="prevPage" v-if="currentPage > 1">
           前へ
-        </button>
-        <button type="button" @click="nextPage" v-if="currentPage < totalPages">
+          </button>
+          <button type="button" @click="nextPage" v-if="currentPage < totalPages">
           次の質問へ
-        </button>
-        <button type="submit" v-if="currentPage === totalPages">
-          結果を表示する
-        </button>
+          </button>
+        </div>
+        <div class="result-button_container">
+          <button type="submit" v-if="currentPage === totalPages">
+            結果を表示する
+          </button>
+        </div>
       </div>
     </form>
   </div>
@@ -395,13 +405,14 @@ export default {
 
 .title {
   text-align: center;
+  font-size: 40px;
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
+
 }
 
-/* .questionnaire-container {
-  background-color: rgb(224, 248, 240);
-} */
-
-/* フォーム全体 */
 .questionnaire-label {
   max-width: 700px;
   margin: 7px auto;
@@ -410,7 +421,8 @@ export default {
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
   font-size: 1.1em;
   display: block;
-  line-height: 4;
+  line-height: 3.5;
+
 
   @media (max-width: 768px) {
     font-size: 0.8rem;
@@ -424,11 +436,14 @@ export default {
 
 /* ボタン */
 .button-container {
+  display: flex;
+  justify-content: center;
   text-align: center;
   margin: 30px auto;
+  gap: 5px;
 }
 
-.button-container button {
+.page-button_container button {
   background-color: #4caf50;
   color: white;
   padding: 10px 20px;
@@ -438,18 +453,32 @@ export default {
   font-size: 1.1em;
 }
 
-button:hover {
+.page-button_container button:hover {
   background-color: #b3f0b6;
+}
+.result-button_container button:hover {
+  background-color: #f8abe2;
+}
+
+.result-button_container button {
+  background-color: #f67dd4;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
 }
 
 .error-message {
   color: rgb(243, 10, 10);
   background-color: #f7d7f5;
-  margin: 0 30px; /* 余白を調整 */
+  margin: 0 10px; /* 余白を調整 */
   display: block;
   font-size: 0.9em;
   border-radius: 5px;
-  padding: 0 20px;
+  line-height: normal;
 
   @media (max-width: 768px) {
     font-size: 0.8rem;
@@ -457,7 +486,6 @@ button:hover {
 
   @media (max-width: 480px) {
     font-size: 0.5rem;
-    line-height: normal;
   }
 }
 
@@ -465,16 +493,51 @@ button:hover {
 .options-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* ラジオボタン間の余白 */
+  gap: 5px;
 }
 
-.options-container input[type="radio"] {
-  transform: scale(1.1); /* サイズを1.5倍にする */
-  margin-left: 20px; /* ラジオボタンとテキストの間隔を調整 */
+/* .options-container input[type="radio"] {
+  transform: scale(1.1);
+  margin-left: 20px;
   cursor: pointer;
 }
 
 .options-container label {
   cursor: pointer;
+} */
+
+/* ラジオボタンを隠す */
+.options-container input[type="radio"] {
+  display: none;
+}
+
+/* ラベルをボタンのようにスタイル */
+.radio-label {
+  padding: 0px 20px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  background-color: #ffffff;
+  color: #007bff;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  width: 50%;
+
+  @media (max-width: 480px) {
+    /* width: 30%; */
+  }
+}
+
+/* ホバー時のスタイル */
+/* .options-container .radio-label:hover {
+  background-color: #007bff;
+  color: #ffffff;
+} */
+
+/* 選択されているときのスタイル */
+.options-container input[type="radio"]:checked + .radio-label {
+  background-color: #007bff;
+  color: #ffffff;
+  border-color: #0056b3;
 }
 </style>
