@@ -1,6 +1,11 @@
 <template>
   <div class="questionnaire-container">
     <h1 class="title">食事アンケート</h1>
+    <h2 class="page-comment">{{ currentComment }}</h2>
+    <p class="remaining-questions">
+      {{currentPage}}／{{ totalPages }}ページ
+      <!-- 残りあと{{ totalQuestions - (currentPage - 1) * questionsPerPage }}問です -->
+    </p>
     <form @submit.prevent="submitAnswers">
       <div
         class="questionnaire-label"
@@ -37,20 +42,16 @@
           </p>
         </div>
       </div>
-      <!-- <div class="error-message_container">
-        <p v-if="validationErrors[questionIndex + index]"
-            class="error-message"
-        >
-            選択していない質問があります
-          </p>
-      </div> -->
+      <!-- <p v-if="hasValidationError" class="error-message">
+        すべての質問に回答してください。
+      </p> -->
       <div class="button-container">
         <div class="page-button_container">
           <button type="button" @click="prevPage" v-if="currentPage > 1">
-          前へ
+          前の質問に戻る
           </button>
           <button type="button" @click="nextPage" v-if="currentPage < totalPages">
-          次の質問へ
+          次の質問に進む
           </button>
         </div>
         <div class="result-button_container">
@@ -118,7 +119,7 @@ export default {
           category: "digestive_health",
         },
         {
-          text: "朝食は基本的に食べない",
+          text: "朝食は基本的に食べない事が多い",
           category: "digestive_health",
         },
         {
@@ -212,15 +213,26 @@ export default {
       },
       currentPage: 1, // 現在のページ
       questionsPerPage: 5, // 1ページあたりの質問数
+      pageComments: [
+        "まずは、５問に答えてね♪",
+        "その調子、その調子(^^)",
+        "迷ったら直感でね♪",
+        "あと、少し！",
+        "ラスト、１０問！",
+        "これで終わりだよ！",
+      ],
     };
   },
   computed: {
     totalPages() {
-      console.log(
-        "Total Pages:",
-        Math.ceil(this.questions.length / this.questionsPerPage)
-      ); // Debugging
+      // console.log(
+      //   "Total Pages:",
+      //   Math.ceil(this.questions.length / this.questionsPerPage)
+      // ); // Debugging
       return Math.ceil(this.questions.length / this.questionsPerPage);
+    },
+    totalQuestions() {
+      return this.questions.length;
     },
     questionIndex() {
       return (this.currentPage - 1) * this.questionsPerPage;
@@ -231,19 +243,6 @@ export default {
         startIndex + this.questionsPerPage,
         this.questions.length
       );
-
-      console.log("Start Index:", startIndex, "End Index:", endIndex); // デバッグ用
-      console.log(
-        "Total Questions:",
-        this.questions.length,
-        "Current Page:",
-        this.currentPage
-      ); // 全体の質問数と現在のページ
-      console.log(
-        "Questions on this page:",
-        this.questions.slice(startIndex, endIndex)
-      );
-
       // 境界条件の確認
       if (startIndex >= this.questions.length) {
         console.warn(
@@ -253,8 +252,8 @@ export default {
       }
       return this.questions.slice(startIndex, endIndex);
     },
-    mounted() {
-      console.log(this.startIndex); // コンポーネントがマウントされた後に totalPages を表示
+    currentComment() {
+      return this.pageComments[this.currentPage - 1] || "";
     },
   },
   created() {
@@ -274,7 +273,7 @@ export default {
       return classes[category] || "text-black";
     },
     nextPage() {
-      console.log("Current Page before next:", this.currentPage);
+      // console.log("Current Page before next:", this.currentPage);
       const isValid = this.validateCurrentPage(); // バリデーション実行
       if (!isValid) {
         this.$nextTick(() => {
@@ -284,49 +283,36 @@ export default {
       }
       this.clearNextPageErrors();
       this.currentPage++; // バリデーションが成功したら次へ
-      console.log("Current Page after next:", this.currentPage); // Check the updated page
+      // console.log("Current Page after next:", this.currentPage); // Check the updated page
     },
-    clearNextPageErrors() {
-      // 次のページに関連する `validationErrors` をすべて false に設定
-      for (
-        let i = this.questionIndex + this.questionsPerPage;
-        i < this.questionIndex + 2 * this.questionsPerPage;
-        i++
-      ) {
-        if (i < this.validationErrors.length) {
-          this.$set(this.validationErrors, i, false);
+      clearNextPageErrors() {
+        const start = this.questionIndex + this.questionsPerPage;
+        const end = start + this.questionsPerPage;
+        for (let i = start; i < end; i++) {
+          if (i < this.validationErrors.length) {
+            this.$set(this.validationErrors, i, false);
+          }
         }
-      }
-    },
-    // バリデーションロジック
-    validateCurrentPage() {
-      let valid = true;
-      const lastPageQuestions = this.currentPage === this.totalPages;
-      for (
-        let i = this.questionIndex;
-        i <
-        Math.min(
-          this.questions.length,
-          this.questionIndex + this.questionsPerPage
-        );
-        i++
-      ) {
-        if (this.answers[i] === null) {
-          this.$set(this.validationErrors, i, true); // Vue.set を使用
-          valid = false;
+      },
+      validateCurrentPage() {
+        let valid = true;
+        for (
+          let i = this.questionIndex;
+          i < Math.min(this.questionIndex + this.questionsPerPage, this.questions.length);
+          i++
+        ) {
+          if (this.answers[i] === null) {
+            this.$set(this.validationErrors, i, true);
+            valid = false;
+          }
         }
-
-        if (lastPageQuestions && this.validationErrors[i]) {
-          valid = false;
-        }
-      }
-      return valid;
-    },
+        return valid;
+      },
     prevPage() {
-      console.log("Current Page before prev:", this.currentPage);
+      // console.log("Current Page before prev:", this.currentPage);
       this.clearValidationErrors();
       this.currentPage--;
-      console.log("Current Page after prev:", this.currentPage);
+      // console.log("Current Page after prev:", this.currentPage);
     },
     clearError(index) {
       this.validationErrors[index] = false;
@@ -343,29 +329,6 @@ export default {
 
     submitAnswers() {
       if (this.validateCurrentPage()) {
-        // 現在ページの情報をコンソールに出力
-        // console.log("Submit - Current Page:", this.currentPage);
-        // console.log("Submit - Total Pages:", this.totalPages);
-
-        // // lastQuestionIndex をここで計算
-        // const lastQuestionIndex = Math.min(
-        //   (this.currentPage - 1) * this.questionsPerPage +
-        //     this.questionsPerPage -
-        //     1, // 現在ページの最後の質問のインデックス
-        //   this.questions.length - 1 // 質問の総数より大きくならないように制限
-        // );
-        // console.log(`Submit - Last Question Index: ${lastQuestionIndex}`);
-
-        const isValid = this.validateCurrentPage(); // 最終ページでもバリデーションをチェック
-        if (!isValid) {
-          // バリデーションエラーがあればエラーを表示
-          this.$nextTick(() => {
-            console.log("バリデーションエラーが表示されました");
-          });
-          return;
-        }
-        this.validationError = false;
-        // スコアの計算
         this.scores = {
           carb_intake: this.getCategoryScore("carb_intake"),
           fat_intake: this.getCategoryScore("fat_intake"),
@@ -374,8 +337,6 @@ export default {
           protein: this.getCategoryScore("protein"),
           mineral_balance: this.getCategoryScore("mineral_balance"),
         };
-
-        // 結果ページへ遷移
         this.$router.push({
           name: "result",
           query: { scores: JSON.stringify(this.scores) },
@@ -411,6 +372,14 @@ export default {
     font-size: 20px;
   }
 
+}
+
+.remaining-questions {
+  color: #555;
+  position: relative;
+  left: 70%;
+  width: 30%;
+  margin: 0;
 }
 
 .questionnaire-label {
@@ -451,6 +420,7 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-size: 1.1em;
+  line-height: 2.5;
 }
 
 .page-button_container button:hover {
@@ -469,6 +439,7 @@ export default {
   cursor: pointer;
   font-size: 1.1em;
   font-weight: bold;
+  line-height: 2.5;
 }
 
 .error-message {
@@ -495,17 +466,6 @@ export default {
   align-items: center;
   gap: 5px;
 }
-
-/* .options-container input[type="radio"] {
-  transform: scale(1.1);
-  margin-left: 20px;
-  cursor: pointer;
-}
-
-.options-container label {
-  cursor: pointer;
-} */
-
 /* ラジオボタンを隠す */
 .options-container input[type="radio"] {
   display: none;
@@ -528,16 +488,17 @@ export default {
   }
 }
 
-/* ホバー時のスタイル */
-/* .options-container .radio-label:hover {
-  background-color: #007bff;
-  color: #ffffff;
-} */
-
 /* 選択されているときのスタイル */
 .options-container input[type="radio"]:checked + .radio-label {
   background-color: #007bff;
   color: #ffffff;
   border-color: #0056b3;
+}
+
+.page-comment {
+  text-align: center;
+  font-size: 1.2em;
+  color: #4caf50;
+  margin-bottom: 20px;
 }
 </style>

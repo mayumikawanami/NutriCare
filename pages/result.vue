@@ -10,7 +10,7 @@
       <thead>
         <tr>
           <th>項目</th>
-          <th>評価　</th>
+          <th>評価</th>
           <th>コメント</th>
         </tr>
       </thead>
@@ -23,15 +23,20 @@
       </tbody>
     </table>
 
-    <!-- <div class="scores">
-      <RadarChart :scores="parsedScores" />
-    </div> -->
-    <div class="result-bottom">
-      <NuxtLink to="/" >トップページに戻る</NuxtLink>
-      <a href="https://docs.google.com/forms/d/15FGl9uAeuHaquDOLfRS9f8CU9SG4N-swgoVbrtlCqfA/viewform?edit_requested=true"
+    <!-- <div class="result-bottom"> -->
+      <!-- <NuxtLink to="/" >トップページに戻る</NuxtLink> -->
+      <!-- <a href="https://forms.gle/AqgMYf2Kk15LoyjF9"
       class="more-info-btn" target="_blank" rel="noopener">
     さらに詳しく知りたい方はこちらへ
       </a>
+    </div> -->
+    <div class="result-bottom">
+      <NuxtLink to="/" >トップページに戻る</NuxtLink>
+      <a :href="generateGoogleFormUrl()"
+      class="more-info-btn" target="_blank" rel="noopener">
+    さらに詳しく知りたい方はこちらのアンケートへ！
+      </a>
+      <h3 v-if="userId">（仮）ユーザーId：{{ userId }}</h3>
     </div>
   </div>
 </template>
@@ -52,6 +57,7 @@ export default {
         mineral_balance: 0,
       },
       resultTable: [],
+      userId: "",
     };
   },
   created() {
@@ -59,19 +65,20 @@ export default {
     if (scores) {
       try {
         this.parsedScores = JSON.parse(scores);
-        console.log('Received scores:', this.parsedScores); // デバッグ用
+        // console.log('Received scores:', this.parsedScores); // デバッグ用
         this.generateResultTable();
       } catch (error) {
         console.error('Failed to parse scores:', error);
       }
     }
+    this.userId = Math.random().toString(36).slice(2, 11);
   },
 watch: {
     parsedScores: {
       handler() {
         this.generateResultTable();
       },
-      deep: true,
+    deep: true,
     },
   },
 
@@ -126,7 +133,7 @@ watch: {
         grade = 'E';
         comment = (name === '糖質') ? '糖質過多の傾向が強い可能性があります。砂糖、ジュース、主食（白米等）を見直しましょう。' :
                   (name === '脂質') ? '脂質コントロール不足の可能性が極めて高いです。冷凍食品等の加工油を、まずは減らしていきましょう。' :
-                  (name === '消化吸収') ? '消化吸収に大いに問題がある可能性があります。１口で３０回噛むから始めてみてください。' :
+                  (name === '消化吸収') ? '消化吸収に大いに問題がある可能性があります。１口で３０回噛むことから始めてみてください。' :
                   (name === '偏食') ? '偏食がかなり心配なようですね。香辛料、酸味のあるものなどを追加して、まずは食欲UPにアプローチしていきましょう。' :
                   (name === 'タンパク質') ? 'かなりタンパク質不足の可能性があるかもしれません。偏食がある場合は、食べられる食材からタンパク質の摂取を増やしていきましょう。' :
                   (name === 'ミネラルバランス') ? 'かなりミネラル不足の可能性があるかもしれません。鉄や亜鉛が多い動物性食品やマグネシウムが多い食材を積極的に摂っていきましょう。' :
@@ -160,7 +167,14 @@ watch: {
     { name: 'タンパク質', ...gradeComment(scores.protein, 'タンパク質') },
     { name: 'ミネラルバランス', ...gradeComment(scores.mineral_balance, 'ミネラルバランス') },
   ];
-  }
+    },
+    generateGoogleFormUrl() {
+      console.log(this.userId);
+      // GoogleフォームのURLとユーザーIDをパラメーターとして結合
+      return `https://docs.google.com/forms/d/e/1FAIpQLSeF-5RwV3RXl6AYFWB2OiKlAyjLtFb_ir1Rda4bQd1zlwlC-A/viewform?entry.1402701286=${this.userId}`;
+    // return `https://docs.google.com/forms/d/e/1FAIpQLSf1N_IZy2nQ0VbKXA-wCtXt2Gohwl22fGAXs7k58U2-1B6MUw/formResponse?entry.1709701619=${this.userId}`;
+    // return `https://forms.gle/pKPoXsnyPXiDRHbk7?entry.1709701619=${encodeURIComponent(this.userId)}`;
+    },
   },
 };
 </script>
@@ -177,19 +191,11 @@ watch: {
 .result-top_title{
   font-size: 2.0rem;
   margin: 5px;
-
-  @media (max-width: 480px) {
-      font-size: 1.0rem;
-  }
 }
 
 .scores {
   margin: 10px auto;
   max-width: 500px;
-
-    @media (max-width: 480px) {
-      margin: 0;
-  }
 }
 
 .result {
@@ -200,14 +206,6 @@ watch: {
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    @media (max-width: 768px) {
-      padding: 20px;
-  }
-
-    @media (max-width: 480px) {
-      padding: 10px;
-  }
-
 }
 
 .more-info-btn {
@@ -233,11 +231,6 @@ watch: {
   border-collapse: collapse;
   font-size: 18px;
   border-radius: 10px;
-
-  @media (max-width: 480px) {
-    font-size: 0.5rem;
-    margin-top: 0;
-  }
 }
 
 .result-table th,
@@ -259,6 +252,26 @@ watch: {
   background-color: #e8f8e1;
 }
 
+@media (max-width: 768px) {
+    .result {
+        padding: 20px;
+  }
+}
+@media (max-width: 480px) {
+    .scores {
+      margin: 0;
+    }
+    .result-table {
+      font-size: 0.5rem;
+      margin-top: 0;
+    }
+    .result {
+      padding: 10px;
+    }
+    .result-top_title{
+      font-size: 1.0rem;
+    }
+}
 /* .grade-A {
   background-color: #cbf9c5;
 }
