@@ -5,6 +5,7 @@
     </div>
     <div class="scores">
       <RadarChart :scores="parsedScores" />
+      <!-- <ResultPage :answers="userAnswers"/> -->
     </div>
     <table class="result-table">
       <thead>
@@ -31,21 +32,41 @@
       </a>
     </div> -->
     <div class="result-bottom">
-      <NuxtLink to="/" >トップページに戻る</NuxtLink>
-      <a :href="generateGoogleFormUrl()"
+      <form @submit.prevent="generateGoogleFormLink">
+        <label for="username">あなたのLINE名を入力してください：</label>
+          <input
+            type="text"
+            id="username"
+            v-model="userName"
+            placeholder="例: momoko"
+            required
+          />
+        <button type="submit">入力完了</button>
+      </form>
+
+    <!-- 動的に生成されたGoogleフォームリンクを表示 -->
+      <div v-if="googleFormLink">
+        <!-- <p>さらに詳しく知りたい方はこちらのアンケートへ！</p> -->
+        <a :href="googleFormLink" class="more-info-btn" target="_blank" rel="noopener">さらに詳しく知りたい方はこちらから</a>
+      </div>
+      <!-- <a :href="GoogleFormLink()"
       class="more-info-btn" target="_blank" rel="noopener">
     さらに詳しく知りたい方はこちらのアンケートへ！
-      </a>
-      <h3 v-if="userId">（仮）ユーザーId：{{ userId }}</h3>
+      </a> -->
+      <!-- <h3 v-if="userId">（仮）ユーザーId：{{ userId }}</h3> -->
     </div>
+    <NuxtLink to="/">トップページに戻る</NuxtLink>
   </div>
 </template>
 
 <script>
 import RadarChart from '@/components/RadarChart.vue';
-
+import ResultPage from '@/components/ResultPage.vue';
 export default {
-  components: { RadarChart },
+  components: {
+    RadarChart,
+    ResultPage
+  },
   data() {
     return {
       parsedScores: {
@@ -57,7 +78,9 @@ export default {
         mineral_balance: 0,
       },
       resultTable: [],
-      userId: "",
+      userName: "",
+      googleFormLink: "",
+      // userId: "",
     };
   },
   created() {
@@ -71,9 +94,9 @@ export default {
         console.error('Failed to parse scores:', error);
       }
     }
-    this.userId = Math.random().toString(36).slice(2, 11);
+    // this.userId = Math.random().toString(36).slice(2, 11);
   },
-watch: {
+  watch: {
     parsedScores: {
       handler() {
         this.generateResultTable();
@@ -86,7 +109,6 @@ watch: {
     generateResultTable() {
   const gradeComment = (score, name) => {
     let grade, comment;
-
 
     switch (score) {
       case 5:
@@ -168,13 +190,26 @@ watch: {
     { name: 'ミネラルバランス', ...gradeComment(scores.mineral_balance, 'ミネラルバランス') },
   ];
     },
-    generateGoogleFormUrl() {
-      console.log(this.userId);
-      // GoogleフォームのURLとユーザーIDをパラメーターとして結合
-      return `https://docs.google.com/forms/d/e/1FAIpQLSeF-5RwV3RXl6AYFWB2OiKlAyjLtFb_ir1Rda4bQd1zlwlC-A/viewform?entry.1402701286=${this.userId}`;
-    // return `https://docs.google.com/forms/d/e/1FAIpQLSf1N_IZy2nQ0VbKXA-wCtXt2Gohwl22fGAXs7k58U2-1B6MUw/formResponse?entry.1709701619=${this.userId}`;
-    // return `https://forms.gle/pKPoXsnyPXiDRHbk7?entry.1709701619=${encodeURIComponent(this.userId)}`;
+    generateGoogleFormLink() {
+      const formBaseUrl =
+        "https://docs.google.com/forms/d/e/1FAIpQLSfAES3vt6kTtoAVInRyuKE7NTcYakrILPf_tfhNyo2qaCCCgw/viewform";
+        // "https://docs.google.com/forms/d/e/1FAIpQLSeF-5RwV3RXl6AYFWB2OiKlAyjLtFb_ir1Rda4bQd1zlwlC-A/viewform";
+      const params = new URLSearchParams({
+        "entry.1441176113": this.userName,
+        "entry.2039548743": `糖質: ${this.parsedScores.carb_intake}, 脂質: ${this.parsedScores.fat_intake}, 消化吸収: ${this.parsedScores.digestive_health}, 偏食: ${this.parsedScores.dietary_bias}, タンパク質: ${this.parsedScores.protein}, ミネラルバランス: ${this.parsedScores.mineral_balance}`,
+
+        // "entry.1402701286": this.userName,
+      });
+
+      this.googleFormLink = `${formBaseUrl}?${params.toString()}`;
     },
+    // generateGoogleFormUrl() {
+    //   console.log(this.userId);
+    //   // GoogleフォームのURLとユーザーIDをパラメーターとして結合
+    //   return `https://docs.google.com/forms/d/e/1FAIpQLSeF-5RwV3RXl6AYFWB2OiKlAyjLtFb_ir1Rda4bQd1zlwlC-A/viewform?entry.1402701286=${this.userId}`;
+    // // return `https://docs.google.com/forms/d/e/1FAIpQLSf1N_IZy2nQ0VbKXA-wCtXt2Gohwl22fGAXs7k58U2-1B6MUw/formResponse?entry.1709701619=${this.userId}`;
+    // // return `https://forms.gle/pKPoXsnyPXiDRHbk7?entry.1709701619=${encodeURIComponent(this.userId)}`;
+    // },
   },
 };
 </script>
