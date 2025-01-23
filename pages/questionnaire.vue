@@ -71,136 +71,167 @@ export default {
       questions: [
         // 糖質
         {
+          id: 1,
           text: "甘い物がやめられない（間食にクッキーやチョコレート）",
           category: "carb_intake",
         },
         {
+          id: 2,
           text: "朝食にはパンやグラノーラが多い（和食以外が多い）",
           category: "carb_intake",
         },
         {
+          id: 3,
           text: "パンが大好きだ",
           category: "carb_intake",
         },
         {
+          id: 4,
           text: "チロルチョコや子ども用チョコレートなど、甘いチョコが大好きだ",
           category: "carb_intake",
         },
         {
+          id: 5,
           text: "お米は白米が多い",
           category: "carb_intake",
         },
 
         // 脂質
         {
+          id: 6,
           text: "アマニ油やエゴマ油などのオメガ３油を摂っていない",
           category: "fat_intake",
         },
         {
+          id: 7,
           text: "サバやイワシなどの青魚をあまり食べない",
           category: "fat_intake",
         },
         {
+          id: 8,
           text: "サラダにはドレッシングやマヨネーズをかけてしまう",
           category: "fat_intake",
         },
         {
+          id: 9,
           text: "コンビニのレジ前の揚げ物やコンビニおにぎり・お菓子が大好きだ",
           category: "fat_intake",
         },
         {
+          id: 10,
           text: "お肉をあまり食べない",
           category: "fat_intake",
         },
 
         // 消化吸収
         {
+          id: 11,
           text: "寝る直前（１時間前～）に何か食べてしまう",
           category: "digestive_health",
         },
         {
+          id: 12,
           text: "朝食は基本的に食べない事が多い",
           category: "digestive_health",
         },
         {
+          id: 13,
           text: "食べるのが早い",
           category: "digestive_health",
         },
         {
+          id: 14,
           text: "動画やテレビを見ながらご飯を食べている",
           category: "digestive_health",
         },
         {
+          id: 15,
           text: "お肉などの脂っこいものを食べると下痢をすることがある",
           category: "digestive_health",
         },
 
         // 偏食
         {
+          id: 16,
           text: "栄養が不足しているとわかっているが、偏食が多くて困っている",
           category: "dietary_bias",
         },
         {
+          id: 17,
           text: "果物をあまり食べてない",
           category: "dietary_bias",
         },
         {
+          id: 18,
           text: "きのこが嫌いで食べない",
           category: "dietary_bias",
         },
         {
+          id: 19,
           text: "レバーが嫌い（レバーを食べない）",
           category: "dietary_bias",
         },
         {
+          id: 20,
           text: "葉物野菜（ほうれん草等）を食べない",
           category: "dietary_bias",
         },
 
         // タンパク質
         {
+          id: 21,
           text: "納豆、お味噌、醤油などの伝統的な和食を食べない",
           category: "protein",
         },
         {
+          id: 22,
           text: "落ち着かない等の症状があると、ついつい甘いものなどを食べさせてしまう",
           category: "protein",
         },
         {
+          id: 23,
           text: "お湯で注ぐだけの即席スープを飲むのが大好きだ",
           category: "protein",
         },
         {
+          id: 24,
           text: "ほぼ毎日グルテンフリーの食事をしている",
           category: "protein",
         },
         {
+          id: 25,
           text: "サプリメントを何種類か飲んでいる",
           category: "protein",
         },
 
         // ミネラルバランス
         {
+          id: 26,
           text: "海藻類を食べる回数が少ない",
           category: "mineral_balance",
         },
         {
+          id: 27,
           text: "自宅の塩は、精製塩である（海塩や岩塩を使っていない）",
           category: "mineral_balance",
         },
         {
+          id: 28,
           text: "砂糖は、白砂糖を使っている",
           category: "mineral_balance",
         },
         {
+          id: 29,
           text: "男梅などのちょっとしょっぱいのが大好きだ",
           category: "mineral_balance",
         },
         {
+          id: 30,
           text: "乳製品（牛乳、チーズ等）が大好きだ",
           category: "mineral_balance",
         },
       ],
+      userAnswers: {},
       answers: [],
       validationErrors: [],
       scores: {
@@ -339,7 +370,11 @@ export default {
         };
         this.$router.push({
           name: "result",
-          query: { scores: JSON.stringify(this.scores) },
+          query: {
+            scores: JSON.stringify(this.scores),
+            questions: JSON.stringify(this.questions),
+            answers: JSON.stringify(this.answers),
+          },
         });
       }
     },
