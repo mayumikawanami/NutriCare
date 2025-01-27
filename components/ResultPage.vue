@@ -1,12 +1,14 @@
 <template>
   <div class="result-page">
-    <h1>アンケート結果</h1>
-    <div v-for="(question, index) in questions" :key="question.id" class="result-item">
-      <h2>{{ question.text }}</h2>
-      <p v-if="userAnswers[index] === true">回答: はい</p>
-      <p v-if="userAnswers[index] === false">回答: いいえ</p>
-      <p v-if="userAnswers[index] === null">回答: 未回答</p>
+    <h3>回答一覧</h3>
+    <div v-if="questions.length && answers.length">
+      <div v-for="(question, index) in questions" :key="index" class="result-item">
+        <li class="result-item_text">{{ question.text }}</li>
+        <p v-if="answers[index]" class="result-item_answer">: はい</p>
+        <p v-else class="result-item_answer">: いいえ</p>
+      </div>
     </div>
+    <p v-else>データを読み込んでいます...</p>
   </div>
 </template>
 
@@ -14,10 +16,25 @@
 export default {
   data() {
     return {
-      // URLのクエリパラメータから渡されたデータを取得
-      questions: JSON.parse(this.$route.query.questions),
-      userAnswers: JSON.parse(this.$route.query.answers),
+      questions: [], // 初期値を空の配列で定義
+      answers: [],
     };
+  },
+  mounted() {
+    try {
+      this.questions = JSON.parse(this.$route.query.questions || "[]");
+      const rawAnswers = JSON.parse(this.$route.query.answers || "[]");
+      this.answers = rawAnswers.map(value => value === 0);
+
+      console.log(JSON.parse(JSON.stringify(this.questions)));
+      console.log(JSON.parse(JSON.stringify(this.answers)));
+      // console.log("Questions:", this.questions);
+      // console.log("Answers:", this.answers);
+    } catch (error) {
+      console.error("Failed to parse query params:", error);
+      this.questions = [];
+      this.answers = [];
+    }
   },
 };
 </script>
@@ -28,7 +45,11 @@ export default {
 }
 
 .result-item {
-  margin-bottom: 20px;
+  display: flex;
+}
+.result-item_answer{
+  margin: 0;
+  color: rgb(251, 131, 3);
 }
 
 .score-container {

@@ -5,7 +5,20 @@
     </div>
     <div class="scores">
       <RadarChart :scores="parsedScores" />
-      <!-- <ResultPage :answers="userAnswers"/> -->
+    </div>
+    <div class="scores-modal">
+      <button @click="showModal = true" class="scores-modal_button">回答を振り返る</button>
+      <div
+        v-if="showModal"
+        class="scores-modal_content"
+        :class="{ visible: showModal }"
+        >
+        <div class="scores-modal_list">
+          <button @click="showModal = false" class="scores-modal_exit-button">閉じる</button>
+          <ResultPage :answers="answers" />
+        </div>
+      </div>
+
     </div>
     <table class="result-table">
       <thead>
@@ -23,6 +36,10 @@
         </tr>
       </tbody>
     </table>
+    <p class="comment">
+      ※この結果はあくまで推測であり断定ではありませんので〇〇〇〇
+    </p>
+    <NuxtLink to="/" >トップページに戻る</NuxtLink>
 
     <!-- <div class="result-bottom"> -->
       <!-- <NuxtLink to="/" >トップページに戻る</NuxtLink> -->
@@ -31,31 +48,40 @@
     さらに詳しく知りたい方はこちらへ
       </a>
     </div> -->
-    <div class="result-bottom">
-      <form @submit.prevent="generateGoogleFormLink">
-        <label for="username">あなたのLINE名を入力してください：</label>
-          <input
-            type="text"
-            id="username"
-            v-model="userName"
-            placeholder="例: momoko"
-            required
-          />
-        <button type="submit">入力完了</button>
-      </form>
-
-    <!-- 動的に生成されたGoogleフォームリンクを表示 -->
-      <div v-if="googleFormLink">
-        <!-- <p>さらに詳しく知りたい方はこちらのアンケートへ！</p> -->
-        <a :href="googleFormLink" class="more-info-btn" target="_blank" rel="noopener">さらに詳しく知りたい方はこちらから</a>
+    <div>
+      <button @click="openModal" class="open-modal-btn">
+      さらに詳しく知りたい方はこちらをクリック！
+    </button>
+      <div v-if="isModalOpen" class="modal-overlay" @click.self="closeModal">
+      <div class="modal-content">
+        <button class="close-modal-btn" @click="closeModal">×</button>
+        <div class="result-bottom">
+          <form @submit.prevent="generateGoogleFormLink" class="name-form">
+            <p class="modal-title">次のアンケートにお答えいただくと〇〇〇〇です！<br>まずあなたのLINE名を入力して入力完了をクリックしてください！</p>
+            <label class="name-form_label">LINE名：
+              <input
+              type="text"
+              id="username"
+              name="username"
+              v-model="userName"
+              placeholder="例: momoko"
+              required
+              autocomplete="username"
+              :readonly="isSubmitted"
+              />
+            </label>
+              <div class="name-form_buttons">
+                <button class="name-form_button" type="submit" :disabled="isSubmitted">{{ buttonText }}</button>
+                <button class="name-form_edit-button" v-if="isSubmitted" @click="enableEditing">名前を編集</button>
+              </div>
+          </form>
+          <div v-if="googleFormLink">
+            <a :href="googleFormLink" class="more-info-btn" target="_blank" rel="noopener">さらに詳しく知りたい方はこちらから</a>
+          </div>
+        </div>
       </div>
-      <!-- <a :href="GoogleFormLink()"
-      class="more-info-btn" target="_blank" rel="noopener">
-    さらに詳しく知りたい方はこちらのアンケートへ！
-      </a> -->
-      <!-- <h3 v-if="userId">（仮）ユーザーId：{{ userId }}</h3> -->
+      </div>
     </div>
-    <NuxtLink to="/">トップページに戻る</NuxtLink>
   </div>
 </template>
 
@@ -78,7 +104,12 @@ export default {
         mineral_balance: 0,
       },
       resultTable: [],
+      showModal: false,
+      isModalOpen: false,
+      answers:[],
       userName: "",
+      buttonText: "入力完了",
+      isSubmitted: false,
       googleFormLink: "",
       // userId: "",
     };
@@ -191,25 +222,37 @@ export default {
   ];
     },
     generateGoogleFormLink() {
+      this.buttonText = '入力済み';
+      this.isSubmitted = true;
+
       const formBaseUrl =
         "https://docs.google.com/forms/d/e/1FAIpQLSfAES3vt6kTtoAVInRyuKE7NTcYakrILPf_tfhNyo2qaCCCgw/viewform";
-        // "https://docs.google.com/forms/d/e/1FAIpQLSeF-5RwV3RXl6AYFWB2OiKlAyjLtFb_ir1Rda4bQd1zlwlC-A/viewform";
+      // "https://docs.google.com/forms/d/e/1FAIpQLSeF-5RwV3RXl6AYFWB2OiKlAyjLtFb_ir1Rda4bQd1zlwlC-A/viewform";
+
+      const userName = this.userName || "未入力";
+        if (!this.parsedScores) {
+          console.error("parsedScoresが未定義です");
+          return null;
+        }
+
       const params = new URLSearchParams({
         "entry.1441176113": this.userName,
         "entry.2039548743": `糖質: ${this.parsedScores.carb_intake}, 脂質: ${this.parsedScores.fat_intake}, 消化吸収: ${this.parsedScores.digestive_health}, 偏食: ${this.parsedScores.dietary_bias}, タンパク質: ${this.parsedScores.protein}, ミネラルバランス: ${this.parsedScores.mineral_balance}`,
-
-        // "entry.1402701286": this.userName,
       });
 
       this.googleFormLink = `${formBaseUrl}?${params.toString()}`;
     },
-    // generateGoogleFormUrl() {
-    //   console.log(this.userId);
-    //   // GoogleフォームのURLとユーザーIDをパラメーターとして結合
-    //   return `https://docs.google.com/forms/d/e/1FAIpQLSeF-5RwV3RXl6AYFWB2OiKlAyjLtFb_ir1Rda4bQd1zlwlC-A/viewform?entry.1402701286=${this.userId}`;
-    // // return `https://docs.google.com/forms/d/e/1FAIpQLSf1N_IZy2nQ0VbKXA-wCtXt2Gohwl22fGAXs7k58U2-1B6MUw/formResponse?entry.1709701619=${this.userId}`;
-    // // return `https://forms.gle/pKPoXsnyPXiDRHbk7?entry.1709701619=${encodeURIComponent(this.userId)}`;
-    // },
+    enableEditing() {
+      this.isSubmitted = false;
+      this.buttonText = '入力完了';
+      this.googleFormLink = false;
+    },
+    openModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
   },
 };
 </script>
@@ -285,6 +328,272 @@ export default {
 
 .result-table tr:nth-child(even) {
   background-color: #e8f8e1;
+}
+
+.comment{
+  text-align: justify;
+
+  margin-top: -24px;
+}
+
+/* 回答詳細のモーダル*/
+.scores-modal {
+  margin-bottom: 5px;
+}
+
+/* 結果を見るボタン */
+.scores-modal_button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.scores-modal_button:hover {
+  background-color: #45a049;
+}
+
+/* モーダルのコンテンツ（表示エリア） */
+.scores-modal_content {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-color: rgba(245, 239, 239, 0.5); 半透明の背景 */
+  display: flex;
+  justify-content:end;
+  z-index: 999;
+  opacity: 1;
+}
+
+.scores-modal_content[style*="display: block"] {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* モーダル内のリスト */
+.scores-modal_list {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  width: 80%;
+  max-width: 700px;
+  max-height: 75%;
+  overflow-y: auto;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 閉じるボタン */
+.scores-modal_exit-button {
+  background-color: #3a98fc;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.scores-modal_exit-button:hover {
+  background-color: #0179f8;
+}
+
+
+
+/* Googleフォームへのモーダル */
+.result-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem auto;
+  padding: 1rem;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 600px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.name-form {
+  display: flex;
+  flex-direction: column; /* 縦方向に配置 */
+  align-items: flex-start;
+  gap: 0.2rem; /* 各要素間の間隔 */
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ラベルスタイル */
+.name-form_label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem; /* 入力フィールドとの間隔 */
+}
+
+/* 入力フィールド */
+.name-form input {
+  width: 97%; /* 入力フィールドを横幅いっぱいに */
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.name-form input:focus {
+  border-color: #007bff;
+}
+
+.name-form input[readonly] {
+  background: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.name-form_buttons {
+  display: flex;
+  gap: 0.5rem; /* ボタン間の隙間 */
+  margin-top: 1rem; /* フォームとの余白 */
+  text-align: center;
+}
+
+/* ボタン共通スタイル */
+.name-form_button,
+.name-form_edit-button {
+  padding: 0.5rem 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  white-space: nowrap;
+}
+
+/* 送信ボタン */
+.name-form_button {
+  background: #007bff;
+  color: #fff;
+}
+
+.name-form_button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.name-form_button:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+/* 編集ボタン */
+.name-form_edit-button {
+  background: #28a745;
+  color: #fff;
+}
+
+.name-form_edit-button:hover {
+  background: #218838;
+}
+
+/* 詳細リンクボタン */
+.more-info-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: #17a2b8;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  text-align: center;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.more-info-btn:hover {
+  background: #138496;
+}
+
+/* モーダルの背景 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* モーダルの中身 */
+.modal-content {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* モーダルを閉じるボタン */
+.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* 名前入力フォーム */
+.name-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.name-form_label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.name-form input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.name-form_buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.open-modal-btn {
+  padding: 0.5rem 1rem;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.open-modal-btn:hover {
+  background: #0056b3;
 }
 
 @media (max-width: 768px) {

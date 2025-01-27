@@ -1,6 +1,6 @@
 <template>
   <div class="top-page">
-    <NuxtLink to="/questionnaire" class="link-button">アンケートに答える</NuxtLink>
+    <NuxtLink to="/questionnaire" class="link-button">食事診断を受けてみる</NuxtLink>
   </div>
 </template>
 

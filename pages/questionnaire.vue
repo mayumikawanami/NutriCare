@@ -1,10 +1,9 @@
 <template>
   <div class="questionnaire-container">
-    <h1 class="title">食事アンケート</h1>
+    <h1 class="title">食事診断チェックシート</h1>
     <h2 class="page-comment">{{ currentComment }}</h2>
     <p class="remaining-questions">
       {{currentPage}}／{{ totalPages }}ページ
-      <!-- 残りあと{{ totalQuestions - (currentPage - 1) * questionsPerPage }}問です -->
     </p>
     <form @submit.prevent="submitAnswers">
       <div
@@ -42,9 +41,6 @@
           </p>
         </div>
       </div>
-      <!-- <p v-if="hasValidationError" class="error-message">
-        すべての質問に回答してください。
-      </p> -->
       <div class="button-container">
         <div class="page-button_container">
           <button type="button" @click="prevPage" v-if="currentPage > 1">
@@ -231,7 +227,7 @@ export default {
           category: "mineral_balance",
         },
       ],
-      userAnswers: {},
+      // userAnswers: {},
       answers: [],
       validationErrors: [],
       scores: {
@@ -316,7 +312,7 @@ export default {
       this.currentPage++; // バリデーションが成功したら次へ
       // console.log("Current Page after next:", this.currentPage); // Check the updated page
     },
-      clearNextPageErrors() {
+    clearNextPageErrors() {
         const start = this.questionIndex + this.questionsPerPage;
         const end = start + this.questionsPerPage;
         for (let i = start; i < end; i++) {
@@ -325,7 +321,7 @@ export default {
           }
         }
       },
-      validateCurrentPage() {
+    validateCurrentPage() {
         let valid = true;
         for (
           let i = this.questionIndex;
