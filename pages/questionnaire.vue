@@ -2,16 +2,15 @@
   <div class="questionnaire-container">
     <h1 class="title">食事診断チェックシート</h1>
     <h2 class="page-comment">{{ currentComment }}</h2>
-    <p class="remaining-questions">
-      {{currentPage}}／{{ totalPages }}ページ
-    </p>
+    <p class="remaining-questions">{{ currentPage }}／{{ totalPages }}ページ</p>
     <form @submit.prevent="submitAnswers">
       <div
         class="questionnaire-label"
         v-for="(question, index) in paginatedQuestions"
         :key="index"
       >
-        <label :class="getClass(question.category)">
+        <label :for="'question-' + index" :class="getClass(question.category)">
+          {{ index + 1 + (currentPage - 1) * questionsPerPage }}.
           {{ question.text }}
         </label>
         <div class="options-container">
@@ -22,7 +21,9 @@
             :id="'yes-' + (questionIndex + index)"
             @change="clearError(questionIndex + index)"
           />
-          <label :for="'yes-' + (questionIndex + index)" class="radio-label">はい</label>
+          <label :for="'yes-' + (questionIndex + index)" class="radio-label"
+            >はい</label
+          >
 
           <input
             type="radio"
@@ -31,7 +32,9 @@
             :id="'no-' + (questionIndex + index)"
             @change="clearError(questionIndex + index)"
           />
-          <label :for="'no-' + (questionIndex + index)" class="radio-label">いいえ</label>
+          <label :for="'no-' + (questionIndex + index)" class="radio-label"
+            >いいえ</label
+          >
 
           <p
             v-if="validationErrors[questionIndex + index]"
@@ -44,10 +47,14 @@
       <div class="button-container">
         <div class="page-button_container">
           <button type="button" @click="prevPage" v-if="currentPage > 1">
-          前の質問に戻る
+            前の質問に戻る
           </button>
-          <button type="button" @click="nextPage" v-if="currentPage < totalPages">
-          次の質問に進む
+          <button
+            type="button"
+            @click="nextPage"
+            v-if="currentPage < totalPages"
+          >
+            次の質問に進む
           </button>
         </div>
         <div class="result-button_container">
@@ -313,28 +320,32 @@ export default {
       // console.log("Current Page after next:", this.currentPage); // Check the updated page
     },
     clearNextPageErrors() {
-        const start = this.questionIndex + this.questionsPerPage;
-        const end = start + this.questionsPerPage;
-        for (let i = start; i < end; i++) {
-          if (i < this.validationErrors.length) {
-            this.$set(this.validationErrors, i, false);
-          }
+      const start = this.questionIndex + this.questionsPerPage;
+      const end = start + this.questionsPerPage;
+      for (let i = start; i < end; i++) {
+        if (i < this.validationErrors.length) {
+          this.$set(this.validationErrors, i, false);
         }
-      },
+      }
+    },
     validateCurrentPage() {
-        let valid = true;
-        for (
-          let i = this.questionIndex;
-          i < Math.min(this.questionIndex + this.questionsPerPage, this.questions.length);
-          i++
-        ) {
-          if (this.answers[i] === null) {
-            this.$set(this.validationErrors, i, true);
-            valid = false;
-          }
+      let valid = true;
+      for (
+        let i = this.questionIndex;
+        i <
+        Math.min(
+          this.questionIndex + this.questionsPerPage,
+          this.questions.length
+        );
+        i++
+      ) {
+        if (this.answers[i] === null) {
+          this.$set(this.validationErrors, i, true);
+          valid = false;
         }
-        return valid;
-      },
+      }
+      return valid;
+    },
     prevPage() {
       // console.log("Current Page before prev:", this.currentPage);
       this.clearValidationErrors();
@@ -398,11 +409,6 @@ export default {
 .title {
   text-align: center;
   font-size: 40px;
-
-  @media (max-width: 480px) {
-    font-size: 20px;
-  }
-
 }
 
 .remaining-questions {
@@ -422,16 +428,6 @@ export default {
   font-size: 1.1em;
   display: block;
   line-height: 3.5;
-
-
-  @media (max-width: 768px) {
-    font-size: 0.8rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.6rem;
-    width: 97%;
-  }
 }
 
 /* ボタン */
@@ -481,14 +477,6 @@ export default {
   font-size: 0.9em;
   border-radius: 5px;
   line-height: normal;
-
-  @media (max-width: 768px) {
-    font-size: 0.8rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.5rem;
-  }
 }
 
 /* ラジオボタンとエラーメッセージを横並びにする */
@@ -513,10 +501,6 @@ export default {
   text-align: center;
   transition: all 0.3s ease;
   width: 50%;
-
-  @media (max-width: 480px) {
-    /* width: 30%; */
-  }
 }
 
 /* 選択されているときのスタイル */
@@ -531,5 +515,27 @@ export default {
   font-size: 1.2em;
   color: #4caf50;
   margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .questionnaire-label {
+    font-size: 0.8rem;
+  }
+  .error-message {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 20px;
+  }
+  .questionnaire-label {
+    font-size: 0.6rem;
+    width: 97%;
+  }
+  .error-message {
+    font-size: 0.5rem;
+  }
 }
 </style>
