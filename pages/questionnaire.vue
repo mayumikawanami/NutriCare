@@ -442,12 +442,13 @@ export default {
 .page-button_container button {
   background-color: #4caf50;
   color: white;
-  padding: 10px 20px;
+  padding: 20px 43px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1.1em;
   line-height: 2.5;
+  margin: 10px;
 }
 
 .page-button_container button:hover {
@@ -459,14 +460,14 @@ export default {
 
 .result-button_container button {
   background-color: #f67dd4;
-  color: white;
-  padding: 10px 20px;
+  color: rgb(245, 240, 240);
+  padding: 20px 48px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1.1em;
-  font-weight: bold;
   line-height: 2.5;
+  margin: 10px;
 }
 
 .error-message {
@@ -512,8 +513,8 @@ export default {
 
 .page-comment {
   text-align: center;
-  font-size: 1.2em;
-  color: #4caf50;
+  font-size: 1.8em;
+  color: #007bff;
   margin-bottom: 20px;
 }
 
@@ -530,12 +531,27 @@ export default {
   .title {
     font-size: 20px;
   }
+
+  .page-comment{
+    font-size: 1rem;
+  }
+
   .questionnaire-label {
     font-size: 0.6rem;
     width: 97%;
   }
   .error-message {
     font-size: 0.5rem;
+  }
+
+  .page-button_container button {
+    padding: 2px 10px;
+    font-size: 14px;
+  }
+  .result-button_container button {
+    padding: 2px 10px;
+    font-size: 14px;
+    margin: 10px;
   }
 }
 </style>

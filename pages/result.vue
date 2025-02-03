@@ -6,7 +6,7 @@
     <div class="scores">
       <RadarChart :scores="parsedScores" />
     </div>
-    <div class="scores-modal">
+    <!-- <div class="scores-modal">
       <button @click="showModal = true" class="scores-modal_button">
         回答を振り返る
       </button>
@@ -18,11 +18,11 @@
         <div class="scores-modal_list">
           <button @click="showModal = false" class="scores-modal_exit-button">
             閉じる
-          </button>
-          <ResultPage :answers="answers" />
-        </div>
+          </button> -->
+    <!-- <ResultPage :answers="answers" /> -->
+    <!-- </div>
       </div>
-    </div>
+    </div> -->
     <table class="result-table">
       <thead>
         <tr>
@@ -43,21 +43,19 @@
         </tr>
       </tbody>
     </table>
-    <p class="comment">
-      ※この結果はあくまで推測であり断定ではありませんので〇〇〇〇
-    </p>
-    <NuxtLink to="/">トップページに戻る</NuxtLink>
+    <div class="comment">
+      <p class="comment-first">※（注意）：この結果はあくまで推測です。</p>
+      <span class="comment-second"
+        >「さらに詳しく知りたい方は、コチラ」へどうぞ</span
+      >
+      <span class="comment-arrow"></span>
+    </div>
 
-    <!-- <div class="result-bottom"> -->
-    <!-- <NuxtLink to="/" >トップページに戻る</NuxtLink> -->
-    <!-- <a href="https://forms.gle/AqgMYf2Kk15LoyjF9"
-      class="more-info-btn" target="_blank" rel="noopener">
-    さらに詳しく知りたい方はこちらへ
-      </a>
-    </div> -->
+    <!-- <NuxtLink to="/">仮ボタン</NuxtLink> -->
+
     <div>
       <button @click="openModal" class="open-modal-btn">
-        さらに詳しく知りたい方はこちらをクリック！
+        さらに詳しく知りたい方は、コチラ
       </button>
       <div v-if="isModalOpen" class="modal-overlay" @click.self="closeModal">
         <div class="modal-content">
@@ -65,16 +63,18 @@
           <div class="result-bottom">
             <form @submit.prevent="generateGoogleFormLink" class="name-form">
               <p class="modal-title">
-                次のアンケートにお答えいただくと〇〇〇〇です！<br />まずあなたのLINE名を入力して入力完了をクリックしてください！
+                まず、あなたのLINE名をいれ、入力完了をクリック！
               </p>
-              <label class="name-form_label"
-                >LINE名：
+              <span class="modal-title_movie"
+                >次のアンケートにお答えいただくと、あなた専用の動画が作成できます</span
+              >
+              <label class="name-form_label">
                 <input
                   type="text"
                   id="username"
                   name="username"
                   v-model="userName"
-                  placeholder="例: momoko"
+                  placeholder="LINE名を入力してください"
                   required
                   autocomplete="username"
                   :readonly="isSubmitted"
@@ -132,7 +132,6 @@ export default {
         mineral_balance: 0,
       },
       resultTable: [],
-      showModal: false,
       isModalOpen: false,
       answers: [],
       questions: [],
@@ -140,7 +139,6 @@ export default {
       buttonText: "入力完了",
       isSubmitted: false,
       googleFormLink: "",
-      // userId: "",
     };
   },
   created() {
@@ -152,27 +150,22 @@ export default {
         const answerText = `${index + 1}.${this.questions[index].text}: ${
           value === 0 ? "はい" : "いいえ"
         }`;
-        // 最後の要素かどうかを判定
         if (index === rawAnswers.length - 1) {
-          return answerText; // 最後の項目にはカンマを付けない
+          return answerText;
         } else {
-          return answerText + " \n"; // 最後でない項目には改行を追加
+          return answerText + " \n";
         }
       })
-      .join(""); // 結果を文字列として結合
+      .join("");
 
-    // this.answers = rawAnswers.map((value, index) => `${index + 1}.${this.questions[index].text}:${value === 0 ? "はい" : "いいえ"} \n`);
-    // this.answers = rawAnswers.map(value => value === 0 ? "はい" : "いいえ");
     if (scores) {
       try {
         this.parsedScores = JSON.parse(scores);
-        // console.log('Received scores:', this.parsedScores); // デバッグ用
         this.generateResultTable();
       } catch (error) {
         console.error("Failed to parse scores:", error);
       }
     }
-    // this.userId = Math.random().toString(36).slice(2, 11);
   },
   watch: {
     parsedScores: {
@@ -299,7 +292,6 @@ export default {
         return { grade, comment };
       };
 
-      // 項目ごとの結果を生成
       const scores = this.parsedScores;
       this.resultTable = [
         { name: "糖質", ...gradeComment(scores.carb_intake, "糖質") },
@@ -320,24 +312,20 @@ export default {
       this.buttonText = "入力済み";
       this.isSubmitted = true;
       const formBaseUrl =
-        "https://docs.google.com/forms/d/e/1FAIpQLSfAES3vt6kTtoAVInRyuKE7NTcYakrILPf_tfhNyo2qaCCCgw/viewform";
-      // "https://docs.google.com/forms/d/e/1FAIpQLSeF-5RwV3RXl6AYFWB2OiKlAyjLtFb_ir1Rda4bQd1zlwlC-A/viewform";
+        "https://docs.google.com/forms/d/e/1FAIpQLSfvEPGiFPfr-A7lHPLd-TQyBR-dzqE6GPJhRDxwB0AeZ92iHA/viewform";
 
       const userName = this.userName || "未入力";
       if (!this.parsedScores) {
         console.error("parsedScoresが未定義です");
         return null;
       }
-      // console.log(this.questions);
 
       const formattedQA = this.answers;
-      // .map((index) => `${this.answers[index] ? "はい" : "いいえ"}`)
-      console.log(formattedQA);
 
       const params = new URLSearchParams({
-        "entry.1441176113": this.userName,
-        "entry.1910308512": `・糖質 ${this.parsedScores.carb_intake} ・脂質 ${this.parsedScores.fat_intake} ・消化吸収 ${this.parsedScores.digestive_health} ・偏食 ${this.parsedScores.dietary_bias}  ・タンパク質 ${this.parsedScores.protein} ・ミネラルバランス ${this.parsedScores.mineral_balance}`,
-        "entry.909910117": formattedQA,
+        "entry.1402701286": this.userName,
+        "entry.1196152437": `・糖質 ${this.parsedScores.carb_intake} ・脂質 ${this.parsedScores.fat_intake} ・消化吸収 ${this.parsedScores.digestive_health} ・偏食 ${this.parsedScores.dietary_bias}  ・タンパク質 ${this.parsedScores.protein} ・ミネラルバランス ${this.parsedScores.mineral_balance}`,
+        "entry.2140904827": formattedQA,
       });
 
       this.googleFormLink = `${formBaseUrl}?${params.toString()}`;
@@ -386,26 +374,8 @@ export default {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* .more-info-btn {
-  background-color: #4caf50;
-  padding: 8px 20px;
-  border-radius: 10px;
-  color: white;
-  font-size: 14px;
-  display: inline-block;
-  text-align: center;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-  margin-left: 10px;
-}
-
-.more-info-btn:hover {
-  background-color: #45a049;
-} */
-
 .result-table {
   width: 100%;
-  margin-bottom: 30px;
   border-collapse: collapse;
   font-size: 18px;
   border-radius: 10px;
@@ -430,85 +400,45 @@ export default {
   background-color: #e8f8e1;
 }
 
-.comment {
+.comment-first {
   text-align: justify;
-
-  margin-top: -24px;
+  margin-top: 0;
 }
 
-/* 回答詳細のモーダル*/
-.scores-modal {
-  margin-bottom: 5px;
+.comment-second {
+  text-align: center;
+  font-size: 22px;
+  margin-top: 10px;
+  background-image: linear-gradient(0deg, #ffca4380 0.5em, transparent 0.5em);
 }
 
-/* 結果を見るボタン */
-.scores-modal_button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+.comment-arrow {
+  display: block;
+  margin: 5px auto;
+  width: 200px;
+  height: 40px;
+  background: linear-gradient(90deg, #0025ff 0%, #00ffe3 100%);
+  clip-path: polygon(
+    0 34.9%,
+    23.4% 34.9%,
+    23.4% 0,
+    76.6% 0,
+    76.6% 34.9%,
+    100% 34.9%,
+    50% 100%
+  );
 }
 
-.scores-modal_button:hover {
-  background-color: #45a049;
-}
-
-/* モーダルのコンテンツ（表示エリア） */
-.scores-modal_content {
-  position: fixed;
-  top: 80px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* background-color: rgba(245, 239, 239, 0.5); 半透明の背景 */
-  display: flex;
-  justify-content: end;
-  z-index: 999;
-  opacity: 1;
-}
-
-.scores-modal_content[style*="display: block"] {
-  opacity: 1;
-  pointer-events: auto;
-  visibility: visible;
-}
-
-/* モーダル内のリスト */
-.scores-modal_list {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  width: 80%;
-  max-width: 700px;
-  max-height: 75%;
-  overflow-y: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* 閉じるボタン */
-.scores-modal_exit-button {
-  background-color: #3a98fc;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  transition: background-color 0.3s ease;
-}
-
-.scores-modal_exit-button:hover {
-  background-color: #0179f8;
-}
-
-/* Googleフォームへのモーダル */
 .modal-title {
-  text-align: left;
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 17px;
+  background-image: linear-gradient(0deg, #ffca4380 0.5em, transparent 0.5em);
+}
+
+.modal-title_movie {
+  margin-bottom: 20px;
+  background-image: linear-gradient(0deg, #ffca4380 0.5em, transparent 0.5em);
 }
 
 .result-bottom {
@@ -526,28 +456,25 @@ export default {
 
 .name-form {
   display: flex;
-  flex-direction: column; /* 縦方向に配置 */
-  /* align-items: flex-start; */
-  gap: 0.2rem; /* 各要素間の間隔 */
+  flex-direction: column;
+  gap: 0.2rem;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
 }
 
-/* ラベルスタイル */
 .name-form_label {
   font-size: 0.9rem;
   font-weight: 600;
   color: #333;
-  margin-bottom: 0.5rem; /* 入力フィールドとの間隔 */
+  margin-bottom: 0.5rem;
 }
 
-/* 入力フィールド */
 .name-form input {
-  width: 50%; /* 入力フィールドを横幅いっぱいに */
+  width: 60%;
   padding: 0.5rem;
-  font-size: 0.9rem;
-  border: 1px solid #ccc;
+  font-size: 1.1rem;
+  border: 2px solid #ccc;
   border-radius: 4px;
   transition: border-color 0.3s;
 }
@@ -563,17 +490,16 @@ export default {
 
 .name-form_buttons {
   display: flex;
-  gap: 0.5rem; /* ボタン間の隙間 */
-  margin-top: 1rem; /* フォームとの余白 */
+  gap: 0.5rem;
+  margin-top: 1rem;
   text-align: center;
   margin: 0 auto;
 }
 
-/* ボタン共通スタイル */
 .name-form_button,
 .name-form_edit-button {
-  padding: 0.5rem 2rem;
-  font-size: 0.9rem;
+  padding: 0.5rem 3.5rem;
+  font-size: 1.1rem;
   font-weight: 600;
   border: none;
   border-radius: 4px;
@@ -582,7 +508,6 @@ export default {
   white-space: nowrap;
 }
 
-/* 送信ボタン */
 .name-form_button {
   background: #007bff;
   color: #fff;
@@ -594,39 +519,38 @@ export default {
 }
 
 .name-form_button:hover:not(:disabled) {
-  background: #0056b3;
+  background: #57a3f5;
 }
 
-/* 編集ボタン */
 .name-form_edit-button {
   background: #28a745;
   color: #fff;
 }
 
 .name-form_edit-button:hover {
-  background: #218838;
+  background: #98d6a6;
 }
 
-/* 詳細リンクボタン */
 .more-info-btn {
-  margin-top: 1rem;
-  padding: 1rem 10rem;
-  font-size: 1.5rem;
-  font-weight: 600;
-  background: #f888de;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
+  display: block;
   text-align: center;
-  display: inline-block;
-  transition: background-color 0.3s;
+  text-decoration: none;
+  margin-top: 10px;
+  padding: 1rem 6rem;
+  font-weight: bold;
+  font-size: 23px;
+  background: #27acd9;
+  border: 6px outset #1699c5;
+  color: #fff;
+  transition: 0.5s;
 }
 
 .more-info-btn:hover {
-  background: #f87bda;
+  background: #5dd0f6;
+  border: 6px outset #27acd9;
+  color: #fff;
 }
 
-/* モーダルの背景 */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -640,7 +564,6 @@ export default {
   z-index: 1000;
 }
 
-/* モーダルの中身 */
 .modal-content {
   background: #fff;
   padding: 1.5rem;
@@ -651,7 +574,6 @@ export default {
   position: relative;
 }
 
-/* モーダルを閉じるボタン */
 .close-modal-btn {
   position: absolute;
   top: 10px;
@@ -662,36 +584,51 @@ export default {
   cursor: pointer;
 }
 
-/* 名前入力フォーム */
-
-/* .name-form_label {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.name-form input {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.name-form_buttons {
-  display: flex;
-  gap: 0.5rem;
-} */
-
 .open-modal-btn {
-  padding: 0.5rem 1rem;
-  background: #007bff;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  margin: auto;
+  padding: 1rem 4rem;
+  font-size: 20px;
+  font-weight: bold;
+  border: 2px solid #27acd9;
+  background: #27acd9;
   color: #fff;
-  border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  transition: 0.5s;
+  animation: move_d 2s infinite;
+  box-shadow: 0 5px 0 rgb(6, 134, 178, 1);
+  position: relative;
   cursor: pointer;
+}
+@keyframes move_d {
+  0% {
+    box-shadow: 0 5px 0 rgb(6, 134, 178, 1);
+    top: 0px;
+  }
+  10% {
+    box-shadow: 0 0 0 rgb(6, 134, 178, 1);
+    top: 5px;
+  }
+  20% {
+    box-shadow: 0 5px 0 rgb(6, 134, 178, 1);
+    top: 0px;
+  }
+  30% {
+    box-shadow: 0 0 0 rgb(6, 134, 178, 1);
+    top: 5px;
+  }
+  40% {
+    box-shadow: 0 5px 0 rgb(6, 134, 178, 1);
+    top: 0px;
+  }
 }
 
 .open-modal-btn:hover {
-  background: #0056b3;
+  color: #27acd9;
+  background: #fff;
+  border: 2px solid #0686b2;
 }
 
 @media (max-width: 768px) {
@@ -712,6 +649,47 @@ export default {
   }
   .result-top_title {
     font-size: 1rem;
+  }
+  .open-modal-btn {
+    font-size: 9px;
+  }
+
+  .comment-first {
+    font-size: 9px;
+  }
+
+  .comment-second {
+    font-size: 13px;
+  }
+
+  .comment-arrow {
+    width: 100px;
+  }
+  .modal-title {
+    font-size: 12px;
+  }
+
+  .modal-title_movie {
+    font-size: 12px;
+  }
+
+  .name-form input {
+    font-size: 12px;
+  }
+
+  .name-form_button {
+    font-size: 12px;
+    padding: 10px 30px;
+  }
+
+  .name-form_edit-button {
+    font-size: 12px;
+    padding: 10px 30px;
+  }
+
+  .more-info-btn {
+    font-size: 15px;
+    padding: 5px 60px;
   }
 }
 /* .grade-A {
