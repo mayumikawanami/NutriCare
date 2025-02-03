@@ -65,8 +65,8 @@
               <p class="modal-title">
                 まず、あなたのLINE名をいれ、入力完了をクリック！
               </p>
-              <span class="modal-title_movie"
-                >次のアンケートにお答えいただくと、あなた専用の動画が作成できます</span
+              <p class="modal-title_movie"
+                >次のアンケートにお答えいただくと、<span class="modal-title_span">あなた専用の動画</span>が作成できます</p
               >
               <label class="name-form_label">
                 <input
@@ -74,7 +74,7 @@
                   id="username"
                   name="username"
                   v-model="userName"
-                  placeholder="LINE名を入力してください"
+                  placeholder="こちらにLINE名を入力してください"
                   required
                   autocomplete="username"
                   :readonly="isSubmitted"
@@ -429,16 +429,17 @@ export default {
   );
 }
 
-.modal-title {
+.modal-title,
+.modal-title_movie {
   margin: 0;
-  margin-bottom: 10px;
   font-size: 17px;
-  background-image: linear-gradient(0deg, #ffca4380 0.5em, transparent 0.5em);
 }
 
-.modal-title_movie {
+.modal-title_span {
   margin-bottom: 20px;
-  background-image: linear-gradient(0deg, #ffca4380 0.5em, transparent 0.5em);
+  font-size: 19px;
+  font-weight: bold;
+  background-image: linear-gradient(0deg, #90f50280 0.8em, transparent 0.5em);
 }
 
 .result-bottom {
@@ -471,7 +472,8 @@ export default {
 }
 
 .name-form input {
-  width: 60%;
+  width: 70%;
+  margin-top: 20px;
   padding: 0.5rem;
   font-size: 1.1rem;
   border: 2px solid #ccc;
