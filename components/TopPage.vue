@@ -80,4 +80,10 @@
     left: 100%;
   }
 }
+
+@media (max-width: 480px) {
+  .link-button{
+    font-size: 12px;
+  }
+}
 </style>

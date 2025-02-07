@@ -1,9 +1,12 @@
 <template>
   <div class="questionnaire-container">
     <h1 class="title">食事診断チェックシート</h1>
-    <h2 class="page-comment">{{ currentComment }}</h2>
+    <div class="comment-top">
+      <img src="images/smile_woman.png" alt="smile_woman" class="top-img">
+      <h2 class="page-comment">{{ currentComment }}</h2>
+    </div>
     <p class="remaining-questions">{{ currentPage }}／{{ totalPages }}ページ</p>
-    <form @submit.prevent="submitAnswers">
+    <form class="questionnaire-form" @submit.prevent="submitAnswers">
       <div
         class="questionnaire-label"
         v-for="(question, index) in paginatedQuestions"
@@ -46,10 +49,10 @@
       </div>
       <div class="button-container">
         <div class="page-button_container">
-          <button type="button" @click="prevPage" v-if="currentPage > 1">
+          <button class="back-button" type="button" @click="prevPage" v-if="currentPage > 1">
             前の質問に戻る
           </button>
-          <button
+          <button class="next_page-button"
             type="button"
             @click="nextPage"
             v-if="currentPage < totalPages"
@@ -411,6 +414,19 @@ export default {
   font-size: 40px;
 }
 
+.comment-top{
+  display: flex;
+}
+
+.top-img{
+  width: 100px;
+  margin-left: 30px;
+}
+
+.questionnaire-form{
+  background-color:  rgb(248, 237, 218);
+}
+
 .remaining-questions {
   color: #555;
   position: relative;
@@ -422,9 +438,9 @@ export default {
 .questionnaire-label {
   max-width: 700px;
   margin: 7px auto;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  /* background-color: #f9f9f9; */
+  /* border-radius: 8px; */
+  /* box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); */
   font-size: 1.1em;
   display: block;
   line-height: 3.5;
@@ -439,8 +455,24 @@ export default {
   gap: 5px;
 }
 
-.page-button_container button {
+
+.back-button{
+  background-color: #a3a8a3;
+}
+
+.next_page-button{
   background-color: #4caf50;
+}
+
+.back-button:hover {
+  background-color: #babbba;
+}
+
+.next_page-button:hover {
+  background-color: #73d176;
+}
+
+.page-button_container button {
   color: white;
   padding: 20px 43px;
   border: none;
@@ -449,11 +481,12 @@ export default {
   font-size: 1.1em;
   line-height: 2.5;
   margin: 10px;
+  font-weight: bold;
 }
 
-.page-button_container button:hover {
+/* .page-button_container button:hover {
   background-color: #b3f0b6;
-}
+} */
 .result-button_container button:hover {
   background-color: #f8abe2;
 }
@@ -468,6 +501,7 @@ export default {
   font-size: 1.1em;
   line-height: 2.5;
   margin: 10px;
+  font-weight: bold;
 }
 
 .error-message {
@@ -485,6 +519,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 5px;
+  margin-bottom: 8px;
 }
 /* ラジオボタンを隠す */
 .options-container input[type="radio"] {
@@ -496,12 +531,13 @@ export default {
   padding: 0px 20px;
   border: 2px solid #007bff;
   border-radius: 5px;
-  background-color: #ffffff;
+  background-color: #faf6f6;
   color: #007bff;
   cursor: pointer;
   text-align: center;
   transition: all 0.3s ease;
   width: 50%;
+  font-weight: bold;
 }
 
 /* 選択されているときのスタイル */
@@ -512,11 +548,46 @@ export default {
 }
 
 .page-comment {
+  position: relative;
+  display: inline-block;
+  margin-left: 60px;
+  padding: 16px;
+  border: 2px solid #dadada;
+  border-radius: 21px;
+  background-color: #ffffd6;
   text-align: center;
-  font-size: 1.8em;
-  color: #007bff;
-  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: #000000;
+  max-width: 270px;
 }
+.page-comment::before {
+  content: "";
+  position: absolute;
+  top: 52%;
+  left: 0;
+  border-style: solid;
+  border-width: 20px 20px 0 0;
+  border-color: transparent #dadada transparent transparent;
+  translate: -100% -50%;
+  transform: skew(0, 22deg);
+  transform-origin: right;
+}
+
+.page-comment::after {
+  content: "";
+  position: absolute;
+  top: 52%;
+  left: 0;
+  border-style: solid;
+  border-width: 15.2px 15.2px 0 0;
+  border-color: transparent #ffffd6 transparent transparent;
+  translate: -100% calc(-50% + 0.4px);
+  transform: skew(0, 22deg);
+  transform-origin: right;
+}
+
 
 @media (max-width: 768px) {
   .questionnaire-label {
@@ -532,8 +603,23 @@ export default {
     font-size: 20px;
   }
 
+  .top-img{
+  width: 80px;
+  height: 70px;
+  margin-left: 30px;
+}
+
   .page-comment{
-    font-size: 1rem;
+    font-size: 10px;
+    width: 130px;
+    height: 20px;
+    margin-left: 20px;
+    line-height: 1;
+  }
+
+  .remaining-questions{
+    font-size: 10px;
+    left: 80%;
   }
 
   .questionnaire-label {

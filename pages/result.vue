@@ -63,11 +63,13 @@
           <div class="result-bottom">
             <form @submit.prevent="generateGoogleFormLink" class="name-form">
               <p class="modal-title">
-                まず、あなたのLINE名をいれ、入力完了をクリック！
+                まず、あなたのLINE名をいれ、入力完了をクリック！<br>次のアンケートにお答えいただくと、
               </p>
-              <p class="modal-title_movie"
-                >次のアンケートにお答えいただくと、<span class="modal-title_span">あなた専用の動画</span>が作成できます</p
-              >
+              <p class="modal-title_movie">
+                <span class="modal-title_span"
+                  > あなた専用の動画</span
+                >が作成できます!
+              </p>
               <label class="name-form_label">
                 <input
                   type="text"
@@ -417,7 +419,7 @@ export default {
   margin: 5px auto;
   width: 200px;
   height: 40px;
-  background: linear-gradient(90deg, #0025ff 0%, #00ffe3 100%);
+  background: linear-gradient(90deg, #78f304 0%, #e8f655 100%);
   clip-path: polygon(
     0 34.9%,
     23.4% 34.9%,
@@ -429,15 +431,18 @@ export default {
   );
 }
 
-.modal-title,
-.modal-title_movie {
+.modal-title{
   margin: 0;
-  font-size: 17px;
+  font-size: 20px;
+  line-height: 2;
+}
+.modal-title_movie {
+  font-size: 20px;
+  margin: 0;
 }
 
 .modal-title_span {
-  margin-bottom: 20px;
-  font-size: 19px;
+  font-size: 25px;
   font-weight: bold;
   background-image: linear-gradient(0deg, #90f50280 0.8em, transparent 0.5em);
 }
@@ -541,16 +546,16 @@ export default {
   padding: 1rem 6rem;
   font-weight: bold;
   font-size: 23px;
-  background: #27acd9;
-  border: 6px outset #1699c5;
+  background: #f58b22;
+  border: 6px outset #f58b22;
   color: #fff;
   transition: 0.5s;
 }
 
 .more-info-btn:hover {
-  background: #5dd0f6;
-  border: 6px outset #27acd9;
-  color: #fff;
+  background: #f58b22;
+  border: 6px outset #dc8023;
+  color: #502801;
 }
 
 .modal-overlay {
@@ -594,43 +599,43 @@ export default {
   padding: 1rem 4rem;
   font-size: 20px;
   font-weight: bold;
-  border: 2px solid #27acd9;
-  background: #27acd9;
+  border: 2px solid #f58b22;
+  background: #f58b22;
   color: #fff;
   border-radius: 5px;
   transition: 0.5s;
   animation: move_d 2s infinite;
-  box-shadow: 0 5px 0 rgb(6, 134, 178, 1);
+  box-shadow: 0 5px 0 rgb(241, 109, 1);
   position: relative;
   cursor: pointer;
 }
 @keyframes move_d {
   0% {
-    box-shadow: 0 5px 0 rgb(6, 134, 178, 1);
+    box-shadow: 0 5px 0 rgb(241, 109, 1);
     top: 0px;
   }
   10% {
-    box-shadow: 0 0 0 rgb(6, 134, 178, 1);
+    box-shadow: 0 0 0 rgb(241, 109, 1);
     top: 5px;
   }
   20% {
-    box-shadow: 0 5px 0 rgb(6, 134, 178, 1);
+    box-shadow: 0 5px 0 rgb(241, 109, 1);
     top: 0px;
   }
   30% {
-    box-shadow: 0 0 0 rgb(6, 134, 178, 1);
+    box-shadow: 0 0 0 rgb(241, 109, 1);
     top: 5px;
   }
   40% {
-    box-shadow: 0 5px 0 rgb(6, 134, 178, 1);
+    box-shadow: 0 5px 0 rgb(241, 109, 1);
     top: 0px;
   }
 }
 
 .open-modal-btn:hover {
-  color: #27acd9;
-  background: #fff;
-  border: 2px solid #0686b2;
+  color: #502801;
+  background: #f58b22;
+  border: 2px solid #f58b22;
 }
 
 @media (max-width: 768px) {
@@ -692,6 +697,10 @@ export default {
   .more-info-btn {
     font-size: 15px;
     padding: 5px 60px;
+  }
+
+  .modal-title_span{
+    font-size: 14px;
   }
 }
 /* .grade-A {
