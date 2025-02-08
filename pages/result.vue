@@ -713,8 +713,8 @@ export default {
     padding: 10px;
   }
   .result-top_title {
-    font-size: 1rem;
-    padding: 0px 18px;
+    font-size: 0.7rem;
+    padding: 0px 14px;
     border-radius: 10px;
   }
   .questionnaire_top-img {
@@ -724,7 +724,7 @@ export default {
 
   .open-modal-btn {
     font-size: 9px;
-    padding: 1rem 3rem;
+    padding: 1rem 2rem;
   }
 
   .comment-first {
@@ -739,15 +739,15 @@ export default {
     width: 100px;
   }
   .modal-title {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .modal-title_movie {
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .name-form input {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .name-form_button {
@@ -762,7 +762,7 @@ export default {
 
   .more-info-btn {
     font-size: 15px;
-    padding: 11px 41px;
+    padding: 11px 37px;
   }
 
   .modal-title_span {

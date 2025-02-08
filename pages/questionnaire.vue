@@ -197,7 +197,7 @@ export default {
         },
         {
           id: 22,
-          text: "落ち着かない等の症状があると、つい甘いもの等を食べさせてしまう",
+          text: "落ち着かない等の症状があると、つい甘いものなどを食べさせてしまう",
           category: "protein",
         },
         {
@@ -625,7 +625,7 @@ export default {
   }
 
   .questionnaire-label {
-    font-size: 0.6rem;
+    font-size: 0.5rem;
     width: 97%;
   }
   .error-message {
