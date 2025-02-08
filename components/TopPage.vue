@@ -82,8 +82,9 @@
 }
 
 @media (max-width: 480px) {
-  .link-button{
+  .link-button {
     font-size: 12px;
+    padding: 1rem 2rem;
   }
 }
 </style>

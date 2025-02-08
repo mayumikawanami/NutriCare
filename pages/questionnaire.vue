@@ -2,7 +2,7 @@
   <div class="questionnaire-container">
     <h1 class="title">食事診断チェックシート</h1>
     <div class="comment-top">
-      <img src="images/smile_woman.png" alt="smile_woman" class="top-img">
+      <img src="images/smile_woman.png" alt="smile_woman" class="top-img" />
       <h2 class="page-comment">{{ currentComment }}</h2>
     </div>
     <p class="remaining-questions">{{ currentPage }}／{{ totalPages }}ページ</p>
@@ -49,10 +49,16 @@
       </div>
       <div class="button-container">
         <div class="page-button_container">
-          <button class="back-button" type="button" @click="prevPage" v-if="currentPage > 1">
+          <button
+            class="back-button"
+            type="button"
+            @click="prevPage"
+            v-if="currentPage > 1"
+          >
             前の質問に戻る
           </button>
-          <button class="next_page-button"
+          <button
+            class="next_page-button"
             type="button"
             @click="nextPage"
             v-if="currentPage < totalPages"
@@ -191,7 +197,7 @@ export default {
         },
         {
           id: 22,
-          text: "落ち着かない等の症状があると、ついつい甘いものなどを食べさせてしまう",
+          text: "落ち着かない等の症状があると、つい甘いもの等を食べさせてしまう",
           category: "protein",
         },
         {
@@ -414,24 +420,23 @@ export default {
   font-size: 40px;
 }
 
-.comment-top{
+.comment-top {
   display: flex;
 }
 
-.top-img{
+.top-img {
   width: 100px;
   margin-left: 30px;
 }
 
-.questionnaire-form{
-  background-color:  rgb(248, 237, 218);
+.questionnaire-form {
+  background-color: rgb(248, 237, 218);
+  border-radius: 20px;
 }
 
 .remaining-questions {
   color: #555;
-  position: relative;
-  left: 70%;
-  width: 30%;
+  text-align-last: end;
   margin: 0;
 }
 
@@ -455,12 +460,11 @@ export default {
   gap: 5px;
 }
 
-
-.back-button{
+.back-button {
   background-color: #a3a8a3;
 }
 
-.next_page-button{
+.next_page-button {
   background-color: #4caf50;
 }
 
@@ -519,7 +523,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-bottom: 8px;
+  margin: 0 8px 10px;
 }
 /* ラジオボタンを隠す */
 .options-container input[type="radio"] {
@@ -531,7 +535,7 @@ export default {
   padding: 0px 20px;
   border: 2px solid #007bff;
   border-radius: 5px;
-  background-color: #faf6f6;
+  background-color: #eef2f6;
   color: #007bff;
   cursor: pointer;
   text-align: center;
@@ -554,11 +558,11 @@ export default {
   padding: 16px;
   border: 2px solid #dadada;
   border-radius: 21px;
-  background-color: #ffffd6;
+  background-color: #d1f3d2;
   text-align: center;
   font-size: 20px;
   font-weight: 400;
-  line-height: 1.75;
+  line-height: 2.75;
   color: #000000;
   max-width: 270px;
 }
@@ -582,12 +586,11 @@ export default {
   left: 0;
   border-style: solid;
   border-width: 15.2px 15.2px 0 0;
-  border-color: transparent #ffffd6 transparent transparent;
+  border-color: transparent #d1f3d2 transparent transparent;
   translate: -100% calc(-50% + 0.4px);
   transform: skew(0, 22deg);
   transform-origin: right;
 }
-
 
 @media (max-width: 768px) {
   .questionnaire-label {
@@ -603,23 +606,22 @@ export default {
     font-size: 20px;
   }
 
-  .top-img{
-  width: 80px;
-  height: 70px;
-  margin-left: 30px;
-}
+  .top-img {
+    width: 80px;
+    height: 70px;
+    margin-left: 30px;
+  }
 
-  .page-comment{
+  .page-comment {
     font-size: 10px;
     width: 130px;
     height: 20px;
     margin-left: 20px;
-    line-height: 1;
+    line-height: 1.5;
   }
 
-  .remaining-questions{
+  .remaining-questions {
     font-size: 10px;
-    left: 80%;
   }
 
   .questionnaire-label {

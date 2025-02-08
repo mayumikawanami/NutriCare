@@ -1,7 +1,12 @@
 <template>
   <div class="result">
     <div class="result-top">
-      <h2 class="result-top_title">結果はこちら</h2>
+      <img
+        src="images/smile_woman.png"
+        alt="smile_woman"
+        class="questionnaire_top-img"
+      />
+      <h2 class="result-top_title">結果はこちらです</h2>
     </div>
     <div class="scores">
       <RadarChart :scores="parsedScores" />
@@ -63,11 +68,10 @@
           <div class="result-bottom">
             <form @submit.prevent="generateGoogleFormLink" class="name-form">
               <p class="modal-title">
-                まず、あなたのLINE名をいれ、入力完了をクリック！<br>次のアンケートにお答えいただくと、
+                まず、あなたのLINE名をいれ、入力完了をクリック！<br />次のアンケートにお答えいただくと、
               </p>
               <p class="modal-title_movie">
-                <span class="modal-title_span"
-                  > あなた専用の動画</span
+                <span class="modal-title_span"> あなた専用の動画</span
                 >が作成できます!
               </p>
               <label class="name-form_label">
@@ -349,16 +353,61 @@ export default {
 
 <style scoped>
 .result-top {
-  text-align: left;
+  display: flex;
   margin-top: 10px;
-  width: 50%;
 }
+
+.questionnaire_top-img {
+  width: 75px;
+}
+
 .advice {
   margin: 0;
 }
-.result-top_title {
+/* .result-top_title {
   font-size: 2rem;
-  margin: 5px;
+  margin-left: 20px;
+} */
+
+.result-top_title {
+  position: relative;
+  display: inline-block;
+  margin: 0 30px;
+  padding: 0 33px;
+  border: 2px solid #616060;
+  border-radius: 21px;
+  background-color: #fce4cd;
+  text-align: center;
+  font-size: 33px;
+  font-weight: 600;
+  line-height: 2.75;
+  color: #000000;
+  max-width: 270px;
+}
+.result-top_title::before {
+  content: "";
+  position: absolute;
+  top: 52%;
+  left: 0;
+  border-style: solid;
+  border-width: 20px 20px 0 0;
+  border-color: transparent #616060 transparent transparent;
+  translate: -100% -50%;
+  transform: skew(0, 22deg);
+  transform-origin: right;
+}
+
+.result-top_title::after {
+  content: "";
+  position: absolute;
+  top: 52%;
+  left: 0;
+  border-style: solid;
+  border-width: 15.2px 15.2px 0 0;
+  border-color: transparent #fce4cd transparent transparent;
+  translate: -100% calc(-50% + 0.4px);
+  transform: skew(0, 22deg);
+  transform-origin: right;
 }
 
 .scores {
@@ -431,7 +480,7 @@ export default {
   );
 }
 
-.modal-title{
+.modal-title {
   margin: 0;
   font-size: 20px;
   line-height: 2;
@@ -642,6 +691,15 @@ export default {
   .result {
     padding: 20px;
   }
+  .result-top_title {
+    padding: 0px 20px;
+    font-size: 23px;
+    line-height: 3.5;
+  }
+  .questionnaire_top-img {
+    width: 80px;
+    height: 83px;
+  }
 }
 @media (max-width: 480px) {
   .scores {
@@ -656,9 +714,17 @@ export default {
   }
   .result-top_title {
     font-size: 1rem;
+    padding: 0px 18px;
+    border-radius: 10px;
   }
+  .questionnaire_top-img {
+    width: 34px;
+    height: 43px;
+  }
+
   .open-modal-btn {
     font-size: 9px;
+    padding: 1rem 3rem;
   }
 
   .comment-first {
@@ -666,22 +732,22 @@ export default {
   }
 
   .comment-second {
-    font-size: 13px;
+    font-size: 11px;
   }
 
   .comment-arrow {
     width: 100px;
   }
   .modal-title {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .modal-title_movie {
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .name-form input {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .name-form_button {
@@ -696,10 +762,10 @@ export default {
 
   .more-info-btn {
     font-size: 15px;
-    padding: 5px 60px;
+    padding: 11px 41px;
   }
 
-  .modal-title_span{
+  .modal-title_span {
     font-size: 14px;
   }
 }
