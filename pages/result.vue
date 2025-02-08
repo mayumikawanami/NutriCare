@@ -2,9 +2,9 @@
   <div class="result">
     <div class="result-top">
       <img
-        src="images/smile_woman.png"
-        alt="smile_woman"
-        class="questionnaire_top-img"
+        src="images/kei_img.png"
+        alt="kei_img"
+        class="result_top-img"
       />
       <h2 class="result-top_title">結果はこちらです</h2>
     </div>
@@ -357,8 +357,8 @@ export default {
   margin-top: 10px;
 }
 
-.questionnaire_top-img {
-  width: 75px;
+.result_top-img {
+  width: 100px;
 }
 
 .advice {
@@ -468,7 +468,7 @@ export default {
   margin: 5px auto;
   width: 200px;
   height: 40px;
-  background: linear-gradient(90deg, #78f304 0%, #e8f655 100%);
+  background: linear-gradient(90deg, #f3af04 0%, #e8f655 100%);
   clip-path: polygon(
     0 34.9%,
     23.4% 34.9%,
@@ -693,10 +693,10 @@ export default {
   }
   .result-top_title {
     padding: 0px 20px;
-    font-size: 23px;
+    font-size: 22px;
     line-height: 3.5;
   }
-  .questionnaire_top-img {
+  .result_top-img {
     width: 80px;
     height: 83px;
   }
@@ -717,9 +717,9 @@ export default {
     padding: 0px 14px;
     border-radius: 10px;
   }
-  .questionnaire_top-img {
-    width: 34px;
-    height: 43px;
+  .result_top-img {
+    width: 17%;
+    height: auto;
   }
 
   .open-modal-btn {
