@@ -2,8 +2,8 @@
   <div class="result">
     <div class="result-top">
       <img
-        src="images/kei_img.png"
-        alt="kei_img"
+        src="images/kei_smile.png"
+        alt="kei_smile"
         class="result_top-img"
       />
       <h2 class="result-top_title">結果はこちらです</h2>

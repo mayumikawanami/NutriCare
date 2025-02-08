@@ -2,7 +2,7 @@
   <div class="questionnaire-container">
     <h1 class="title">食事診断チェックシート</h1>
     <div class="comment-top">
-      <img src="images/kei_img.png" alt="kei_img" class="top-img" />
+      <img src="images/kei_smile.png" alt="kei_smile" class="top-img" />
       <h2 class="page-comment">{{ currentComment }}</h2>
     </div>
     <p class="remaining-questions">{{ currentPage }}／{{ totalPages }}ページ</p>
