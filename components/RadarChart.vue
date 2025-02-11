@@ -5,9 +5,28 @@
 </template>
 
 <script>
-import { Chart as ChartJS, Title, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, RadarController,Filler } from 'chart.js';
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  RadarController,
+  Filler,
+} from "chart.js";
 
-ChartJS.register(Title, Tooltip, Legend, RadialLinearScale, PointElement, LineElement, RadarController,Filler);
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  RadialLinearScale,
+  PointElement,
+  LineElement,
+  RadarController,
+  Filler
+);
 
 export default {
   props: {
@@ -37,7 +56,7 @@ export default {
   },
   methods: {
     renderChart() {
-      const ctx = this.$refs.radarCanvas.getContext('2d');
+      const ctx = this.$refs.radarCanvas.getContext("2d");
 
       // 既存のチャートがあれば破棄
       if (this.chart instanceof ChartJS) {
@@ -56,18 +75,25 @@ export default {
 
       // 新しいチャートを作成
       this.chart = new ChartJS(ctx, {
-        type: 'radar',
+        type: "radar",
         data: {
-          labels: ['糖質', '脂質', '消化吸収', '偏食', 'タンパク質', ['ミネラル', 'バランス']],
+          labels: [
+            "糖質",
+            "脂質",
+            "消化吸収",
+            "偏食",
+            "タンパク質",
+            ["ミネラル", "バランス"],
+          ],
           datasets: [
             {
-              label: 'スコア',
+              label: "スコア",
               data: scoreArray,
-              backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 3,
-              pointBorderWidth: 2,
-              pointRadius: 2,
+              backgroundColor: "rgba(54, 162, 235, 0.2)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 2,
+              pointBorderWidth: 1,
+              pointRadius: 1,
               fill: true,
             },
           ],
@@ -82,24 +108,24 @@ export default {
               ticks: {
                 stepSize: 1,
                 callback: function (value) {
-                  if (value === 0){
-                    return '0'; // 0も表示する
+                  if (value === 0) {
+                    return "0"; // 0も表示する
                   }
                   return value; // スコアをそのまま表示
                 },
                 font: {
-                  size: 12, // スコアの文字サイズを調整
+                  size: Math.max(7, window.innerWidth * 0.013), // スコアの文字サイズを調整
                 },
-                  color: 'rgba(0, 0, 0, 0.7)', // スコアの文字色
+                color: "rgba(0, 0, 0, 0.7)", // スコアの文字色
               },
               grid: {
-                color: 'rgba(0, 0, 0, 0.2)',
+                color: "rgba(0, 0, 0, 0.2)",
               },
               pointLabels: {
-          font: {
-            size: 12, // ラベルの文字サイズを指定
-          },
-          color: 'rgba(0, 0, 0, 0.7)', // ラベルの文字色
+                font: {
+                  size: Math.max(7, window.innerWidth * 0.015), // ラベルの文字サイズを指定
+                },
+                color: "rgba(0, 0, 0, 1)", // ラベルの文字色
               },
             },
           },
@@ -115,6 +141,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

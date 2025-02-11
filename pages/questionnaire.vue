@@ -68,7 +68,7 @@
         </div>
         <div class="result-button_container">
           <button type="submit" v-if="currentPage === totalPages">
-            結果を表示する
+            結果を見る
           </button>
         </div>
       </div>
@@ -432,6 +432,8 @@ export default {
 .questionnaire-form {
   background-color: rgb(248, 237, 218);
   border-radius: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .remaining-questions {
@@ -443,15 +445,11 @@ export default {
 .questionnaire-label {
   max-width: 700px;
   margin: 7px auto;
-  /* background-color: #f9f9f9; */
-  /* border-radius: 8px; */
-  /* box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); */
   font-size: 1.1em;
   display: block;
   line-height: 3.5;
 }
 
-/* ボタン */
 .button-container {
   display: flex;
   justify-content: center;
@@ -480,7 +478,7 @@ export default {
   color: white;
   padding: 20px 43px;
   border: none;
-  border-radius: 5px;
+  border-radius: 23px;
   cursor: pointer;
   font-size: 1.1em;
   line-height: 2.5;
@@ -488,19 +486,16 @@ export default {
   font-weight: bold;
 }
 
-/* .page-button_container button:hover {
-  background-color: #b3f0b6;
-} */
 .result-button_container button:hover {
-  background-color: #f8abe2;
+  background-color: #f3af04;
 }
 
 .result-button_container button {
-  background-color: #f67dd4;
-  color: rgb(245, 240, 240);
-  padding: 20px 48px;
+  background-color: #f37f04;
+  color: rgb(251, 247, 247);
+  padding: 20px 62px;
   border: none;
-  border-radius: 5px;
+  border-radius: 23px;
   cursor: pointer;
   font-size: 1.1em;
   line-height: 2.5;
@@ -510,31 +505,26 @@ export default {
 
 .error-message {
   color: rgb(243, 10, 10);
-  background-color: #f7d7f5;
-  margin: 0 10px; /* 余白を調整 */
-  display: block;
   font-size: 0.9em;
-  border-radius: 5px;
   line-height: normal;
+  margin: 0;
 }
 
-/* ラジオボタンとエラーメッセージを横並びにする */
 .options-container {
   display: flex;
   align-items: center;
   gap: 5px;
   margin: 0 8px 10px;
 }
-/* ラジオボタンを隠す */
+
 .options-container input[type="radio"] {
   display: none;
 }
 
-/* ラベルをボタンのようにスタイル */
 .radio-label {
   padding: 0px 20px;
   border: 2px solid #007bff;
-  border-radius: 5px;
+  border-radius: 30px;
   background-color: #eef2f6;
   color: #007bff;
   cursor: pointer;
@@ -544,7 +534,6 @@ export default {
   font-weight: bold;
 }
 
-/* 選択されているときのスタイル */
 .options-container input[type="radio"]:checked + .radio-label {
   background-color: #007bff;
   color: #ffffff;
@@ -599,6 +588,12 @@ export default {
   .error-message {
     font-size: 0.8rem;
   }
+  .page-button_container button {
+    font-size: 14px;
+  }
+  .result-button_container button {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -633,12 +628,12 @@ export default {
   }
 
   .page-button_container button {
-    padding: 2px 10px;
-    font-size: 14px;
+    padding: 7px 10px;
+    font-size: 13px;
   }
   .result-button_container button {
-    padding: 2px 10px;
-    font-size: 14px;
+    padding: 7px 23px;
+    font-size: 13px;
     margin: 10px;
   }
 }

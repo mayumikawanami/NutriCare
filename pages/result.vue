@@ -1,33 +1,12 @@
 <template>
   <div class="result">
     <div class="result-top">
-      <img
-        src="images/kei_smile.png"
-        alt="kei_smile"
-        class="result_top-img"
-      />
+      <img src="images/kei_smile.png" alt="kei_smile" class="result_top-img" />
       <h2 class="result-top_title">結果はこちらです</h2>
     </div>
     <div class="scores">
       <RadarChart :scores="parsedScores" />
     </div>
-    <!-- <div class="scores-modal">
-      <button @click="showModal = true" class="scores-modal_button">
-        回答を振り返る
-      </button>
-      <div
-        v-if="showModal"
-        class="scores-modal_content"
-        :class="{ visible: showModal }"
-      >
-        <div class="scores-modal_list">
-          <button @click="showModal = false" class="scores-modal_exit-button">
-            閉じる
-          </button> -->
-    <!-- <ResultPage :answers="answers" /> -->
-    <!-- </div>
-      </div>
-    </div> -->
     <table class="result-table">
       <thead>
         <tr>
@@ -42,36 +21,35 @@
           :key="index"
           :class="'grade-' + item.grade"
         >
-          <td>{{ item.name }}</td>
-          <td>{{ item.grade }}</td>
+          <td class="item-cell">{{ item.name }}</td>
+          <td class="grade-cell">{{ item.grade }}</td>
           <td class="justify-text">{{ item.comment }}</td>
         </tr>
       </tbody>
     </table>
     <div class="comment">
-      <p class="comment-first">※（注意）：この結果はあくまで推測です。</p>
-      <span class="comment-second"
-        >「さらに詳しく知りたい方は、コチラ」へどうぞ</span
-      >
+      <p class="comment-first">
+        ※（注意）：この結果はあくまで推測です。<br />※：点数が高いほど良好です。
+      </p>
+      <span class="comment-second">さらに詳しく知りたい方は、コチラ</span>
       <span class="comment-arrow"></span>
     </div>
 
     <!-- <NuxtLink to="/">仮ボタン</NuxtLink> -->
 
     <div>
-      <button @click="openModal" class="open-modal-btn">
-        さらに詳しく知りたい方は、コチラ
-      </button>
+      <button @click="openModal" class="open-modal-btn">次へ進む</button>
       <div v-if="isModalOpen" class="modal-overlay" @click.self="closeModal">
         <div class="modal-content">
           <button class="close-modal-btn" @click="closeModal">×</button>
           <div class="result-bottom">
             <form @submit.prevent="generateGoogleFormLink" class="name-form">
               <p class="modal-title">
-                まず、あなたのLINE名をいれ、入力完了をクリック！<br />次のアンケートにお答えいただくと、
+                まず、あなたのLINE名をいれ、入力完了をクリック！
               </p>
               <p class="modal-title_movie">
-                <span class="modal-title_span"> あなた専用の動画</span
+                <span class="modal-title_span">
+                  次のアンケートにお答えいただくと<br />あなた専用の動画</span
                 >が作成できます!
               </p>
               <label class="name-form_label">
@@ -189,7 +167,7 @@ export default {
 
         switch (score) {
           case 5:
-            grade = "A";
+            grade = "A\n<5点>";
             comment =
               name === "糖質"
                 ? "糖質コントロールがうまくできていそうです。現状の食生活を続けていきましょう！"
@@ -206,7 +184,7 @@ export default {
                 : "";
             break;
           case 4:
-            grade = "B";
+            grade = "B\n<4点>";
             comment =
               name === "糖質"
                 ? "糖質コントロールをさらに改善できそうです。タンパク質、脂質もバランスよく摂っていきましょう。"
@@ -223,7 +201,7 @@ export default {
                 : "";
             break;
           case 3:
-            grade = "C";
+            grade = "C\n<3点>";
             comment =
               name === "糖質"
                 ? "少し糖質過多になっていないか？見直してみましょう。白米、白砂糖など白を減らしましょう。"
@@ -240,7 +218,7 @@ export default {
                 : "";
             break;
           case 2:
-            grade = "D";
+            grade = "D\n<2点>";
             comment =
               name === "糖質"
                 ? "糖質過多になっている可能性が高いです。おやつから見直して見ると良いかもしれません。"
@@ -257,7 +235,7 @@ export default {
                 : "";
             break;
           case 1:
-            grade = "E";
+            grade = "E\n<1点>";
             comment =
               name === "糖質"
                 ? "糖質過多の傾向が強い可能性があります。砂糖、ジュース、主食（白米等）を見直しましょう。"
@@ -274,7 +252,7 @@ export default {
                 : "";
             break;
           case 0:
-            grade = "F";
+            grade = "F\n<0点>";
             comment =
               name === "糖質"
                 ? "糖質過多の傾向が強い可能性があります。今すぐお菓子や主食を見直しましょう！"
@@ -374,7 +352,7 @@ export default {
   display: inline-block;
   margin: 0 30px;
   padding: 0 33px;
-  border: 2px solid #616060;
+  border: 2px solid #dadada;
   border-radius: 21px;
   background-color: #fce4cd;
   text-align: center;
@@ -391,7 +369,7 @@ export default {
   left: 0;
   border-style: solid;
   border-width: 20px 20px 0 0;
-  border-color: transparent #616060 transparent transparent;
+  border-color: transparent #dadada transparent transparent;
   translate: -100% -50%;
   transform: skew(0, 22deg);
   transform-origin: right;
@@ -413,6 +391,8 @@ export default {
 .scores {
   margin: 10px auto;
   max-width: 500px;
+  background-color: white;
+  border-radius: 90px;
 }
 
 .result {
@@ -430,6 +410,21 @@ export default {
   border-collapse: collapse;
   font-size: 18px;
   border-radius: 10px;
+}
+
+.result-table thead tr {
+  display: grid;
+  grid-template-columns: 1.2fr 1.1fr 5fr; /* 1:1:4 の比率 */
+}
+
+.result-table tbody tr {
+  display: grid;
+  grid-template-columns: 1.2fr 1.1fr 5fr; /* tbody も同じ比率を適用 */
+}
+
+.result-table th,
+.result-table td {
+  padding: 8px;
 }
 
 .result-table th,
@@ -456,6 +451,16 @@ export default {
   margin-top: 0;
 }
 
+.grade-cell {
+  white-space: pre-line;
+}
+
+.grade-cell::after {
+  content: attr(data-small); /* 小さい文字を追加 */
+  font-size: 0.4em;
+  display: block;
+  color: gray;
+}
 .comment-second {
   text-align: center;
   font-size: 22px;
@@ -482,7 +487,7 @@ export default {
 
 .modal-title {
   margin: 0;
-  font-size: 20px;
+  font-size: 19px;
   line-height: 2;
 }
 .modal-title_movie {
@@ -493,7 +498,7 @@ export default {
 .modal-title_span {
   font-size: 25px;
   font-weight: bold;
-  background-image: linear-gradient(0deg, #90f50280 0.8em, transparent 0.5em);
+  background-image: linear-gradient(0deg, #f87dd980 0.8em, transparent 0.5em);
 }
 
 .result-bottom {
@@ -527,7 +532,7 @@ export default {
 
 .name-form input {
   width: 70%;
-  margin-top: 20px;
+  margin-top: 12px;
   padding: 0.5rem;
   font-size: 1.1rem;
   border: 2px solid #ccc;
@@ -558,7 +563,7 @@ export default {
   font-size: 1.1rem;
   font-weight: 600;
   border: none;
-  border-radius: 4px;
+  border-radius: 35px;
   cursor: pointer;
   transition: background-color 0.3s;
   white-space: nowrap;
@@ -586,25 +591,51 @@ export default {
 .name-form_edit-button:hover {
   background: #98d6a6;
 }
-
 .more-info-btn {
   display: block;
   text-align: center;
   text-decoration: none;
-  margin-top: 10px;
+  margin-top: 18px;
   padding: 1rem 6rem;
+  font-size: 26px;
   font-weight: bold;
-  font-size: 23px;
+  border: 2px solid #f58b22;
   background: #f58b22;
-  border: 6px outset #f58b22;
   color: #fff;
+  border-radius: 5px;
   transition: 0.5s;
+  animation: move_d 2s infinite;
+  box-shadow: 0 5px 0 rgb(241, 109, 1);
+  position: relative;
+  cursor: pointer;
+}
+@keyframes move_d {
+  0% {
+    box-shadow: 0 5px 0 rgb(241, 109, 1);
+    top: 0px;
+  }
+  10% {
+    box-shadow: 0 0 0 rgb(241, 109, 1);
+    top: 5px;
+  }
+  20% {
+    box-shadow: 0 5px 0 rgb(241, 109, 1);
+    top: 0px;
+  }
+  30% {
+    box-shadow: 0 0 0 rgb(241, 109, 1);
+    top: 5px;
+  }
+  40% {
+    box-shadow: 0 5px 0 rgb(241, 109, 1);
+    top: 0px;
+  }
 }
 
-.more-info-btn:hover {
-  background: #f58b22;
-  border: 6px outset #dc8023;
+.more-info-btn :hover {
   color: #502801;
+  background: #f58b22;
+  border: 2px solid #f58b22;
 }
 
 .modal-overlay {
@@ -645,8 +676,8 @@ export default {
   text-align: center;
   text-decoration: none;
   margin: auto;
-  padding: 1rem 4rem;
-  font-size: 20px;
+  padding: 1rem 9rem;
+  font-size: 26px;
   font-weight: bold;
   border: 2px solid #f58b22;
   background: #f58b22;
@@ -700,14 +731,43 @@ export default {
     width: 80px;
     height: 83px;
   }
+  .result-table {
+    font-size: 13px;
+  }
+  .result-table th {
+    font-size: 0.7rem;
+  }
+  .grade-cell {
+    font-size: 11px;
+  }
+
+  .open-modal-btn {
+    padding: 1rem 6rem;
+  }
+  .more-info-btn {
+    font-size: 23px;
+  }
+  .modal-title {
+    font-size: 16px;
+  }
+
+  .modal-title_movie {
+    font-size: 16px;
+  }
 }
 @media (max-width: 480px) {
   .scores {
-    margin: 0;
+    border-radius: 30px;
   }
   .result-table {
-    font-size: 0.5rem;
+    font-size: 0.4rem;
     margin-top: 0;
+  }
+  .result-table th {
+    font-size: 0.3rem;
+  }
+  .grade-cell {
+    font-size: 0.4rem;
   }
   .result {
     padding: 10px;
@@ -715,7 +775,7 @@ export default {
   .result-top_title {
     font-size: 0.7rem;
     padding: 0px 14px;
-    border-radius: 10px;
+    border-radius: 14px;
   }
   .result_top-img {
     width: 17%;
@@ -723,8 +783,8 @@ export default {
   }
 
   .open-modal-btn {
-    font-size: 9px;
-    padding: 1rem 2rem;
+    font-size: 13px;
+    padding: 1rem 4rem;
   }
 
   .comment-first {
