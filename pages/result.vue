@@ -390,7 +390,7 @@ export default {
 
 .scores {
   margin: 10px auto;
-  max-width: 500px;
+  width: 47%;
   background-color: white;
   border-radius: 90px;
 }
@@ -731,6 +731,9 @@ export default {
     width: 80px;
     height: 83px;
   }
+  .scores {
+    width: 90%;
+  }
   .result-table {
     font-size: 13px;
   }
@@ -758,6 +761,7 @@ export default {
 @media (max-width: 480px) {
   .scores {
     border-radius: 30px;
+    width: 80%;
   }
   .result-table {
     font-size: 0.4rem;

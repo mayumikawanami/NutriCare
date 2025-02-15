@@ -94,12 +94,12 @@ export default {
         },
         {
           id: 3,
-          text: "パンが大好きだ",
+          text: "パンが大好きで、休日もよく食べる",
           category: "carb_intake",
         },
         {
           id: 4,
-          text: "チロルチョコや子ども用チョコレートなど、甘いチョコが大好きだ",
+          text: "甘いチョコが好きで、家によく置いてある",
           category: "carb_intake",
         },
         {
@@ -126,7 +126,7 @@ export default {
         },
         {
           id: 9,
-          text: "コンビニのレジ前の揚げ物やコンビニおにぎり・お菓子が大好きだ",
+          text: "コンビニのレジ前の揚げ物やお菓子が大好き",
           category: "fat_intake",
         },
         {
@@ -202,7 +202,7 @@ export default {
         },
         {
           id: 23,
-          text: "お湯で注ぐだけの即席スープを飲むのが大好きだ",
+          text: "即席スープが大好きで、週の半分以上飲む",
           category: "protein",
         },
         {
@@ -422,10 +422,11 @@ export default {
 
 .comment-top {
   display: flex;
+  align-items: center;
 }
 
 .top-img {
-  width: 100px;
+  width: 150px;
   margin-left: 30px;
 }
 
@@ -543,7 +544,7 @@ export default {
 .page-comment {
   position: relative;
   display: inline-block;
-  margin-left: 60px;
+  margin-left: 40px;
   padding: 16px;
   border: 2px solid #dadada;
   border-radius: 21px;
@@ -582,6 +583,12 @@ export default {
 }
 
 @media (max-width: 768px) {
+  .top-img {
+    width: 100px;
+  }
+  .page-comment {
+    margin-left: 10px;
+  }
   .questionnaire-label {
     font-size: 0.8rem;
   }
@@ -602,9 +609,8 @@ export default {
   }
 
   .top-img {
-    width: 80px;
-    height: 70px;
-    margin-left: 30px;
+    width: 60px;
+    margin-left: 20px;
   }
 
   .page-comment {
