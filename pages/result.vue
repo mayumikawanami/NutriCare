@@ -414,12 +414,12 @@ export default {
 
 .result-table thead tr {
   display: grid;
-  grid-template-columns: 1.2fr 1.1fr 5fr; /* 1:1:4 の比率 */
+  grid-template-columns: 1.1fr 1.1fr 4.5fr; /* 1:1:4 の比率 */
 }
 
 .result-table tbody tr {
   display: grid;
-  grid-template-columns: 1.2fr 1.1fr 5fr; /* tbody も同じ比率を適用 */
+  grid-template-columns: 1.1fr 1.1fr 4.5fr; /* tbody も同じ比率を適用 */
 }
 
 .result-table th,
@@ -737,9 +737,9 @@ export default {
   .result-table {
     font-size: 13px;
   }
-  .result-table th {
+  /* .result-table th {
     font-size: 0.7rem;
-  }
+  } */
   .grade-cell {
     font-size: 11px;
   }
@@ -767,9 +767,9 @@ export default {
     font-size: 0.4rem;
     margin-top: 0;
   }
-  .result-table th {
+  /* .result-table th {
     font-size: 0.3rem;
-  }
+  } */
   .grade-cell {
     font-size: 0.4rem;
   }

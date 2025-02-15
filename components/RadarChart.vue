@@ -114,6 +114,7 @@ export default {
                   return value; // スコアをそのまま表示
                 },
                 font: {
+                  family: "'M PLUS Rounded 1c', sans-serif",
                   size: Math.max(4, window.innerWidth * 0.013), // スコアの文字サイズを調整
                 },
                 color: "rgba(0, 0, 0, 0.7)", // スコアの文字色
@@ -123,6 +124,7 @@ export default {
               },
               pointLabels: {
                 font: {
+                  family: "'M PLUS Rounded 1c', sans-serif",
                   size: Math.max(4, window.innerWidth * 0.015), // ラベルの文字サイズを指定
                 },
                 color: "rgba(0, 0, 0, 1)", // ラベルの文字色
